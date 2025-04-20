@@ -256,42 +256,42 @@ const expLogos = [
 const testimonials = [
   {
     name: "Komal Jadhav",
-    mentions: "@komaljadhav",
+    mentions: "Manager - Application Developer, CMS Info Systems",
     review:
       "Vivek’s commitment to CMS was exceptional. From tight deadlines to high expectations, he consistently delivered with sharp UI decisions, rock-solid development, and a can-do attitude. His dedication and focus truly made a difference across our modules.",
     imgPath: "/images/testimonials/komal.png",
   },
   {
     name: "Mahesh Pathak",
-    mentions: "@maheshpathak",
+    mentions: "CEO, Oneture Technologies",
     review:
       "Vivek has consistently proven his versatility and innovation while working with our clients at Oneture. Whether it was NSDL, BSE, or CMS, his ability to adapt, lead, and deliver high-quality solutions across technologies has made him one of our most valued engineers.",
     imgPath: "/images/testimonials/mahesh.jpg",
   },
   {
     name: "Ravi Mevcha",
-    mentions: "@ravimevcha",
+    mentions: "CTO & Product Management Lead, Oneture Technologies",
     review:
       "At BSE, Vivek stepped up to take full ownership of both the UI and backend for our DaaS platform. His work ethic, speed, and quality of delivery under pressure were impressive. He brought structure, stability, and polish to the entire system.",
     imgPath: "/images/testimonials/ravi.jpg",
   },
   {
     name: "Ruchira Thakare",
-    mentions: "@ruchirathakre",
+    mentions: "Director, CMS Info Systems",
     review:
       "Vivek brought our vision to life with his clean, user-centric frontend development. His eye for detail, design intuition, and ability to iterate quickly helped us ship beautiful interfaces at CMS with consistency and quality.",
     imgPath: "/images/testimonials/ruchira.jpg",
   },
   {
     name: "Vaibhav Malave",
-    mentions: "@vaibhavmalave",
+    mentions: "Engineering Manager, Oneture Technologies",
     review:
       "Vivek was one of the most reliable developers on the NSDL FPI project. He consistently went above and beyond — proactively solving challenges, collaborating across teams, and delivering end-to-end features with precision and care.",
     imgPath: "/images/testimonials/vaibhav.jpg",
   },
   {
     name: "Aayush Shah",
-    mentions: "@aayushshah",
+    mentions: "Director of Engineering, Oneture Technologies",
     review:
       "Vivek showed deep ownership on the BSE project. From complex backend flows to S3 data sync jobs and security-first development, he ensured our cloud infrastructure and services worked flawlessly. His backend skills are elite.",
     imgPath: "/images/testimonials/aayush.jpg",
