@@ -16,12 +16,11 @@ const getCardWidth = () =>
 
 export default function Testimonials({ testimonials }: TestimonialsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
   const animRef = useRef(0);
+  const pausedRef = useRef(false);
   const [cardWidth, setCardWidth] = useState(400);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const lastIndexRef = useRef(0);
 
   useEffect(() => {
     setCardWidth(getCardWidth());
@@ -29,12 +28,32 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
 
   useEffect(() => {
     const scroll = scrollRef.current;
-    const inner = innerRef.current;
-    if (!scroll || !inner) return;
+    const dotsContainer = dotsRef.current;
+    if (!scroll || !dotsContainer) return;
 
     const count = testimonials.length;
     const cardUnit = cardWidth + CARD_GAP;
     const singleSetWidth = count * cardUnit;
+    let lastIndex = -1;
+
+    const updateDots = (index: number) => {
+      if (index === lastIndex) return;
+      lastIndex = index;
+      const dots = dotsContainer.children;
+      for (let i = 0; i < dots.length; i++) {
+        const dot = dots[i] as HTMLElement;
+        if (i === index) {
+          dot.style.width = "24px";
+          dot.style.backgroundColor = "var(--color-gold, #d4a853)";
+        } else {
+          dot.style.width = "8px";
+          dot.style.backgroundColor = "rgba(255,255,255,0.2)";
+        }
+      }
+    };
+
+    // Initial dot state
+    updateDots(0);
 
     const step = () => {
       posRef.current += SPEED;
@@ -43,20 +62,21 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
       }
       scroll.style.transform = `translateX(-${posRef.current}px)`;
 
-      // Update active dot
+      // Direct DOM dot update (no React setState)
       const index = Math.floor(posRef.current / cardUnit) % count;
-      if (index !== lastIndexRef.current) {
-        lastIndexRef.current = index;
-        setActiveIndex(index);
-      }
+      updateDots(index);
 
       animRef.current = requestAnimationFrame(step);
     };
 
     animRef.current = requestAnimationFrame(step);
 
-    const pause = () => cancelAnimationFrame(animRef.current);
+    const pause = () => {
+      pausedRef.current = true;
+      cancelAnimationFrame(animRef.current);
+    };
     const resume = () => {
+      pausedRef.current = false;
       animRef.current = requestAnimationFrame(step);
     };
     scroll.addEventListener("mouseenter", pause);
@@ -72,10 +92,23 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
   const scrollToIndex = (index: number) => {
     const cardUnit = cardWidth + CARD_GAP;
     posRef.current = index * cardUnit;
-    lastIndexRef.current = index;
-    setActiveIndex(index);
     if (scrollRef.current) {
       scrollRef.current.style.transform = `translateX(-${posRef.current}px)`;
+    }
+    // Update dots directly
+    const dotsContainer = dotsRef.current;
+    if (dotsContainer) {
+      const dots = dotsContainer.children;
+      for (let i = 0; i < dots.length; i++) {
+        const dot = dots[i] as HTMLElement;
+        if (i === index) {
+          dot.style.width = "24px";
+          dot.style.backgroundColor = "var(--color-gold, #d4a853)";
+        } else {
+          dot.style.width = "8px";
+          dot.style.backgroundColor = "rgba(255,255,255,0.2)";
+        }
+      }
     }
   };
 
@@ -106,7 +139,6 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
 
         <div ref={scrollRef} className="will-change-transform">
           <div
-            ref={innerRef}
             className="flex"
             style={{ width: "max-content", gap: `${CARD_GAP}px` }}
           >
@@ -151,17 +183,20 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
         </div>
       </div>
 
-      {/* Dot indicators */}
-      <div className="flex justify-center gap-2 mt-8">
+      {/* Dot indicators - updated via direct DOM manipulation for sync */}
+      <div ref={dotsRef} className="flex justify-center gap-2 mt-8">
         {testimonials.map((t, i) => (
           <button
             key={t.name}
             onClick={() => scrollToIndex(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              i === activeIndex
-                ? "bg-gold w-6"
-                : "bg-white/20 hover:bg-white/40 w-2"
-            }`}
+            className="h-2 rounded-full transition-all duration-300"
+            style={{
+              width: i === 0 ? "24px" : "8px",
+              backgroundColor:
+                i === 0
+                  ? "var(--color-gold, #d4a853)"
+                  : "rgba(255,255,255,0.2)",
+            }}
             aria-label={`Go to ${t.name}'s testimonial`}
           />
         ))}
