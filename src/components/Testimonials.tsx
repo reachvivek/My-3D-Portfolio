@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { gsap } from "gsap";
 import Image from "next/image";
@@ -19,29 +19,19 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
   const tweenRef = useRef<gsap.core.Tween | null>(null);
   const [cardWidth, setCardWidth] = useState(400);
   const [activeIndex, setActiveIndex] = useState(0);
+  const lastIndexRef = useRef(0);
 
   useEffect(() => {
     setCardWidth(getCardWidth());
   }, []);
 
-  // Track which card is currently most visible
-  const updateActiveIndex = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const transform = track.style.transform;
-    const match = transform.match(/translateX\((-?[\d.]+)px\)/);
-    if (!match) return;
-    const xPos = Math.abs(parseFloat(match[1]));
-    const cardUnit = cardWidth + CARD_GAP;
-    const index = Math.round(xPos / cardUnit) % testimonials.length;
-    setActiveIndex(index);
-  }, [cardWidth, testimonials.length]);
-
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    const totalWidth = testimonials.length * (cardWidth + CARD_GAP);
+    const count = testimonials.length;
+    const cardUnit = cardWidth + CARD_GAP;
+    const totalWidth = count * cardUnit;
 
     const tween = gsap.to(track, {
       x: -totalWidth,
@@ -53,7 +43,16 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           return parseFloat(String(x)) % totalWidth;
         }),
       },
-      onUpdate: updateActiveIndex,
+      onUpdate: function () {
+        // Use tween progress to calculate current card index
+        const progress = this.progress();
+        const currentX = progress * totalWidth;
+        const index = Math.floor(currentX / cardUnit) % count;
+        if (index !== lastIndexRef.current) {
+          lastIndexRef.current = index;
+          setActiveIndex(index);
+        }
+      },
     });
 
     tweenRef.current = tween;
@@ -69,29 +68,28 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
       track.removeEventListener("mouseenter", handleEnter);
       track.removeEventListener("mouseleave", handleLeave);
     };
-  }, [cardWidth, testimonials.length, updateActiveIndex]);
+  }, [cardWidth, testimonials.length]);
 
   const scrollToIndex = (index: number) => {
     const tween = tweenRef.current;
     if (!tween) return;
 
     const cardUnit = cardWidth + CARD_GAP;
-    const targetX = index * cardUnit;
+    const totalWidth = testimonials.length * cardUnit;
+    const targetProgress = (index * cardUnit) / totalWidth;
 
     tween.pause();
-    gsap.to(trackRef.current, {
-      x: -targetX,
+    gsap.to(tween, {
+      progress: targetProgress,
       duration: 0.6,
       ease: "power2.out",
+      onUpdate: () => {
+        setActiveIndex(index);
+      },
       onComplete: () => {
         setActiveIndex(index);
-        // Resume auto-scroll from new position
-        if (tween) {
-          const totalWidth = testimonials.length * cardUnit;
-          const progress = targetX / totalWidth;
-          tween.progress(progress);
-          tween.resume();
-        }
+        lastIndexRef.current = index;
+        tween.resume();
       },
     });
   };
@@ -172,10 +170,10 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           <button
             key={t.name}
             onClick={() => scrollToIndex(i)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+            className={`h-2 rounded-full transition-all duration-300 ${
               i === activeIndex
                 ? "bg-gold w-6"
-                : "bg-white/20 hover:bg-white/40"
+                : "bg-white/20 hover:bg-white/40 w-2"
             }`}
             aria-label={`Go to ${t.name}'s testimonial`}
           />
