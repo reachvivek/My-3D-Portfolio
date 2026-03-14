@@ -10,7 +10,7 @@ interface TestimonialsProps {
 }
 
 const CARD_GAP = 24;
-const SPEED = 0.5;
+const SPEED = 1.2;
 const getCardWidth = () =>
   typeof window !== "undefined" && window.innerWidth < 640 ? 300 : 400;
 
