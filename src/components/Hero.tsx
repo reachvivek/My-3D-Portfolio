@@ -262,7 +262,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 2.9 }}
-              className="flex flex-col sm:flex-row items-start gap-3 mt-6 sm:mt-10"
+              className="flex flex-row items-center gap-3 mt-6 sm:mt-10 flex-wrap"
             >
               <a
                 href="https://calendly.com/rogerthatvivek/30min"

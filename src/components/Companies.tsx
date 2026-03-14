@@ -87,8 +87,8 @@ export default function Companies({ companies }: CompaniesProps) {
                   alt={company.name}
                   height={56}
                   width={180}
-                  className="h-14 w-auto object-contain invert"
-                  style={{ maxWidth: "180px" }}
+                  className="object-contain invert"
+                  style={{ height: "56px", width: "auto", maxWidth: "180px" }}
                 />
               </div>
             ))}
