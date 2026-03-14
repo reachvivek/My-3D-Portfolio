@@ -198,6 +198,12 @@ export const testimonials = [
     text: "From complex backend flows to S3 data sync and security-first development, his backend skills are elite.",
     imgPath: "/images/testimonials/aayush.jpg",
   },
+  {
+    name: "Shakeeb Hammad",
+    role: "CEO, Zeqi / Co-Founder, Touchbase",
+    text: "Vivek single-handedly built Caidence and ppl from the ground up as our sole developer. His ability to take full ownership of complex AI products and deliver production-ready platforms independently was exceptional.",
+    imgPath: "/images/testimonials/shakeeb.jpg",
+  },
 ];
 
 export const navLinks = [

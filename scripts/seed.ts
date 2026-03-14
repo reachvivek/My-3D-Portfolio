@@ -405,6 +405,7 @@ const testimonials = [
   { name: "Ruchira Thakare", role: "Director, CMS Info Systems", text: "His eye for detail and ability to iterate quickly helped us ship beautiful interfaces with consistency.", imgPath: "/images/testimonials/ruchira.jpg", order: 3 },
   { name: "Vaibhav Malave", role: "Engineering Manager, Oneture", text: "One of the most reliable developers on the NSDL FPI project. Proactive, collaborative, and precise.", imgPath: "/images/testimonials/vaibhav.jpg", order: 4 },
   { name: "Aayush Shah", role: "Director of Engineering, Oneture", text: "From complex backend flows to S3 data sync and security-first development, his backend skills are elite.", imgPath: "/images/testimonials/aayush.jpg", order: 5 },
+  { name: "Shakeeb Hammad", role: "CEO, Zeqi / Co-Founder, Touchbase", text: "Vivek single-handedly built Caidence and ppl from the ground up as our sole developer. His ability to take full ownership of complex AI products and deliver production-ready platforms independently was exceptional.", imgPath: "/images/testimonials/shakeeb.jpg", order: 6 },
 ];
 
 const socialLinks = [
