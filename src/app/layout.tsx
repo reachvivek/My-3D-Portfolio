@@ -52,6 +52,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Vivek Kumar Singh | Developer Dubai",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Vivek Kumar Singh | Full-Stack Developer & AI Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -83,7 +91,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
