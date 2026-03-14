@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "motion/react";
 import { gsap } from "gsap";
 import Image from "next/image";
@@ -18,10 +18,24 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
   const [cardWidth, setCardWidth] = useState(400);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     setCardWidth(getCardWidth());
   }, []);
+
+  // Track which card is currently most visible
+  const updateActiveIndex = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const transform = track.style.transform;
+    const match = transform.match(/translateX\((-?[\d.]+)px\)/);
+    if (!match) return;
+    const xPos = Math.abs(parseFloat(match[1]));
+    const cardUnit = cardWidth + CARD_GAP;
+    const index = Math.round(xPos / cardUnit) % testimonials.length;
+    setActiveIndex(index);
+  }, [cardWidth, testimonials.length]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -39,6 +53,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           return parseFloat(String(x)) % totalWidth;
         }),
       },
+      onUpdate: updateActiveIndex,
     });
 
     tweenRef.current = tween;
@@ -54,7 +69,32 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
       track.removeEventListener("mouseenter", handleEnter);
       track.removeEventListener("mouseleave", handleLeave);
     };
-  }, [cardWidth, testimonials.length]);
+  }, [cardWidth, testimonials.length, updateActiveIndex]);
+
+  const scrollToIndex = (index: number) => {
+    const tween = tweenRef.current;
+    if (!tween) return;
+
+    const cardUnit = cardWidth + CARD_GAP;
+    const targetX = index * cardUnit;
+
+    tween.pause();
+    gsap.to(trackRef.current, {
+      x: -targetX,
+      duration: 0.6,
+      ease: "power2.out",
+      onComplete: () => {
+        setActiveIndex(index);
+        // Resume auto-scroll from new position
+        if (tween) {
+          const totalWidth = testimonials.length * cardUnit;
+          const progress = targetX / totalWidth;
+          tween.progress(progress);
+          tween.resume();
+        }
+      },
+    });
+  };
 
   const doubled = [...testimonials, ...testimonials];
 
@@ -124,6 +164,22 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-2 mt-8">
+        {testimonials.map((t, i) => (
+          <button
+            key={t.name}
+            onClick={() => scrollToIndex(i)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              i === activeIndex
+                ? "bg-gold w-6"
+                : "bg-white/20 hover:bg-white/40"
+            }`}
+            aria-label={`Go to ${t.name}'s testimonial`}
+          />
+        ))}
       </div>
     </section>
   );
