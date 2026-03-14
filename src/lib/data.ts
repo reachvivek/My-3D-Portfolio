@@ -163,6 +163,24 @@ export const services = [
 
 export const testimonials = [
   {
+    name: "Shakeeb Hammad",
+    role: "CEO, Zeqi / Co-Founder, Touchbase",
+    text: "Vivek built Caidence and ppl from the ground up as our sole developer. What stood out most was his energy and responsiveness. Whenever we needed something, he was on it immediately. That kind of ownership over complex AI products is rare to find.",
+    imgPath: "/images/testimonials/shakeeb.jpg",
+  },
+  {
+    name: "Raghav Sobti",
+    role: "Engineering Manager, Azaya Marketing LLC",
+    text: "As Vivek's direct manager, I can confidently say any team would be lucky to have him. His technical expertise, AI prompting skills, and ability to deliver quick, accurate resolutions consistently produced quality results. He's detail-oriented, collaborative, and always willing to go the extra mile, often stepping in outside regular hours without even being asked.",
+    imgPath: "/images/testimonials/raghav.jpg",
+  },
+  {
+    name: "Tsurov Magomet",
+    role: "Automotive Photographer, tsurov.com",
+    text: "Vivek is simply the best developer I've worked with. He built my entire visual portfolio platform and podcast studio booking site from scratch with admin panels, SEO, and stunning design. He understood my creative vision perfectly and delivered beyond what I imagined.",
+    imgPath: "/images/testimonials/tsurov.jpg",
+  },
+  {
     name: "Komal Jadhav",
     role: "Manager, CMS Info Systems",
     text: "Vivek's commitment was exceptional. He consistently delivered with sharp UI decisions and rock-solid development.",
@@ -197,18 +215,6 @@ export const testimonials = [
     role: "Director of Engineering, Oneture",
     text: "From complex backend flows to S3 data sync and security-first development, his backend skills are elite.",
     imgPath: "/images/testimonials/aayush.jpg",
-  },
-  {
-    name: "Shakeeb Hammad",
-    role: "CEO, Zeqi / Co-Founder, Touchbase",
-    text: "Vivek single-handedly built Caidence and ppl from the ground up as our sole developer. His ability to take full ownership of complex AI products and deliver production-ready platforms independently was exceptional.",
-    imgPath: "/images/testimonials/shakeeb.jpg",
-  },
-  {
-    name: "Tsurov Magomet",
-    role: "Automotive Photographer, tsurov.com",
-    text: "Vivek is simply the best developer I've worked with. He built my entire visual portfolio platform and podcast studio booking site from scratch — complete with admin panels, SEO, and stunning design. He understood my creative vision perfectly and delivered beyond what I imagined.",
-    imgPath: "/images/testimonials/tsurov.jpg",
   },
 ];
 
