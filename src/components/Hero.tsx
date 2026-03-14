@@ -161,10 +161,25 @@ function PhotoReveal({ show, className }: { show: boolean; className?: string })
             transition={{ duration: 0.25 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <span className="px-3 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-[10px] font-mono text-gold tracking-wider inline-flex items-center gap-1.5">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-green-400">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
+            <span className="px-2.5 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-[8px] sm:text-[10px] font-mono text-gold tracking-wider inline-flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
+              <motion.svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-green-400 shrink-0"
+              >
+                <motion.path
+                  d="M20 6L9 17l-5-5"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                />
+              </motion.svg>
               IDENTITY CONFIRMED
             </span>
           </motion.div>
