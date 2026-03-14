@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
+import * as dotenv from "dotenv";
+import path from "path";
 
-const MONGODB_URI =
-  "REDACTED";
+dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
+
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 const experienceSchema = new mongoose.Schema({
   title: String,
