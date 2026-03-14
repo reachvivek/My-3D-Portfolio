@@ -17,9 +17,11 @@ const getCardWidth = () =>
 export default function Testimonials({ testimonials }: TestimonialsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
+  const pauseIconRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
   const animRef = useRef(0);
   const pausedRef = useRef(false);
+  const stepFnRef = useRef<(() => void) | null>(null);
   const [cardWidth, setCardWidth] = useState(400);
 
   useEffect(() => {
@@ -52,7 +54,6 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
       }
     };
 
-    // Initial dot state
     updateDots(0);
 
     const step = () => {
@@ -62,30 +63,63 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
       }
       scroll.style.transform = `translateX(-${posRef.current}px)`;
 
-      // Direct DOM dot update (no React setState)
       const index = Math.floor(posRef.current / cardUnit) % count;
       updateDots(index);
 
       animRef.current = requestAnimationFrame(step);
     };
 
+    stepFnRef.current = step;
     animRef.current = requestAnimationFrame(step);
 
+    // Desktop: hover to pause
     const pause = () => {
-      pausedRef.current = true;
-      cancelAnimationFrame(animRef.current);
+      if (!pausedRef.current) {
+        pausedRef.current = true;
+        cancelAnimationFrame(animRef.current);
+      }
     };
     const resume = () => {
-      pausedRef.current = false;
-      animRef.current = requestAnimationFrame(step);
+      if (pausedRef.current) {
+        pausedRef.current = false;
+        animRef.current = requestAnimationFrame(step);
+        // Hide pause icon
+        if (pauseIconRef.current) {
+          pauseIconRef.current.style.opacity = "0";
+        }
+      }
     };
     scroll.addEventListener("mouseenter", pause);
     scroll.addEventListener("mouseleave", resume);
+
+    // Mobile: tap to toggle pause/play
+    const handleTap = (e: TouchEvent) => {
+      // Don't interfere with dot clicks
+      if ((e.target as HTMLElement).closest("[data-dot]")) return;
+
+      if (pausedRef.current) {
+        // Resume
+        pausedRef.current = false;
+        animRef.current = requestAnimationFrame(step);
+        if (pauseIconRef.current) {
+          pauseIconRef.current.style.opacity = "0";
+        }
+      } else {
+        // Pause
+        pausedRef.current = true;
+        cancelAnimationFrame(animRef.current);
+        if (pauseIconRef.current) {
+          pauseIconRef.current.style.opacity = "1";
+        }
+      }
+    };
+    scroll.addEventListener("touchstart", handleTap, { passive: true });
 
     return () => {
       cancelAnimationFrame(animRef.current);
       scroll.removeEventListener("mouseenter", pause);
       scroll.removeEventListener("mouseleave", resume);
+      scroll.removeEventListener("touchstart", handleTap);
     };
   }, [cardWidth, testimonials.length]);
 
@@ -95,7 +129,6 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
     if (scrollRef.current) {
       scrollRef.current.style.transform = `translateX(-${posRef.current}px)`;
     }
-    // Update dots directly
     const dotsContainer = dotsRef.current;
     if (dotsContainer) {
       const dots = dotsContainer.children;
@@ -108,6 +141,14 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           dot.style.width = "8px";
           dot.style.backgroundColor = "rgba(255,255,255,0.2)";
         }
+      }
+    }
+    // Resume scrolling after jumping to a dot
+    if (pausedRef.current && stepFnRef.current) {
+      pausedRef.current = false;
+      animRef.current = requestAnimationFrame(stepFnRef.current);
+      if (pauseIconRef.current) {
+        pauseIconRef.current.style.opacity = "0";
       }
     }
   };
@@ -137,7 +178,25 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
         <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
 
-        <div ref={scrollRef} className="will-change-transform">
+        {/* Pause indicator overlay */}
+        <div
+          ref={pauseIconRef}
+          className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-300"
+          style={{ opacity: 0 }}
+        >
+          <div className="bg-black/60 backdrop-blur-sm rounded-full p-4">
+            <svg
+              className="w-8 h-8 text-white/70"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <rect x="6" y="4" width="4" height="16" rx="1" />
+              <rect x="14" y="4" width="4" height="16" rx="1" />
+            </svg>
+          </div>
+        </div>
+
+        <div ref={scrollRef} className="will-change-transform cursor-pointer">
           <div
             className="flex"
             style={{ width: "max-content", gap: `${CARD_GAP}px` }}
@@ -183,11 +242,12 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
         </div>
       </div>
 
-      {/* Dot indicators - updated via direct DOM manipulation for sync */}
+      {/* Dot indicators */}
       <div ref={dotsRef} className="flex justify-center gap-2 mt-8">
         {testimonials.map((t, i) => (
           <button
             key={t.name}
+            data-dot
             onClick={() => scrollToIndex(i)}
             className="h-2 rounded-full transition-all duration-300"
             style={{
