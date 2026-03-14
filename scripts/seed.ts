@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
 
@@ -406,6 +410,7 @@ const testimonials = [
   { name: "Vaibhav Malave", role: "Engineering Manager, Oneture", text: "One of the most reliable developers on the NSDL FPI project. Proactive, collaborative, and precise.", imgPath: "/images/testimonials/vaibhav.jpg", order: 4 },
   { name: "Aayush Shah", role: "Director of Engineering, Oneture", text: "From complex backend flows to S3 data sync and security-first development, his backend skills are elite.", imgPath: "/images/testimonials/aayush.jpg", order: 5 },
   { name: "Shakeeb Hammad", role: "CEO, Zeqi / Co-Founder, Touchbase", text: "Vivek single-handedly built Caidence and ppl from the ground up as our sole developer. His ability to take full ownership of complex AI products and deliver production-ready platforms independently was exceptional.", imgPath: "/images/testimonials/shakeeb.jpg", order: 6 },
+  { name: "Tsurov Magomet", role: "Automotive Photographer, tsurov.com", text: "Vivek is simply the best developer I've worked with. He built my entire visual portfolio platform and podcast studio booking site from scratch — complete with admin panels, SEO, and stunning design. He understood my creative vision perfectly and delivered beyond what I imagined.", imgPath: "/images/testimonials/tsurov.jpg", order: 7 },
 ];
 
 const socialLinks = [
