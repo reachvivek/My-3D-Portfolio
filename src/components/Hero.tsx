@@ -229,7 +229,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
       />
 
       <div className="max-w-7xl mx-auto w-full relative z-10 pt-32 pb-20 md:pt-0 md:pb-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
           {/* ── Left Column: Value Proposition ── */}
           <div>
             {/* Big Bold Headline */}
@@ -237,7 +237,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 2.4 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.08]"
+              className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.08]"
             >
               {h.headline}
               <br />
@@ -249,7 +249,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 2.7 }}
-              className="mt-8 text-sm sm:text-base text-white/40 leading-relaxed max-w-lg"
+              className="mt-5 sm:mt-8 text-sm sm:text-base text-white/40 leading-relaxed max-w-lg"
             >
               {h.subline} Building AI voice agents for{" "}
               <span className="text-white/60">Audi, Porsche & Volkswagen</span>
@@ -262,7 +262,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 2.9 }}
-              className="flex flex-col sm:flex-row items-start gap-3 mt-10"
+              className="flex flex-col sm:flex-row items-start gap-3 mt-6 sm:mt-10"
             >
               <a
                 href="https://calendly.com/rogerthatvivek/30min"
@@ -341,7 +341,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 2.8 }}
-            className="relative h-[420px] lg:hidden"
+            className="relative h-[360px] lg:hidden"
           >
             {/* Terminal card — top left */}
             <div className="absolute top-0 left-0 right-8 glass rounded-2xl overflow-hidden border border-white/[0.08] shadow-2xl z-20">

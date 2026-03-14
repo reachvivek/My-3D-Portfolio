@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { gsap } from "gsap";
 
@@ -31,19 +31,26 @@ const linkedInPosts = [
   },
 ];
 
-const CARD_WIDTH = 420;
+const getCardWidth = () => (typeof window !== "undefined" && window.innerWidth < 640 ? 300 : 420);
 const CARD_GAP = 24;
-const CARD_HEIGHT = 480;
+const getCardHeight = () => (typeof window !== "undefined" && window.innerWidth < 640 ? 380 : 480);
 
 export default function Highlights() {
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const [cardWidth, setCardWidth] = useState(420);
+  const [cardHeight, setCardHeight] = useState(480);
+
+  useEffect(() => {
+    setCardWidth(getCardWidth());
+    setCardHeight(getCardHeight());
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    const totalWidth = linkedInPosts.length * (CARD_WIDTH + CARD_GAP);
+    const totalWidth = linkedInPosts.length * (cardWidth + CARD_GAP);
 
     const tween = gsap.to(track, {
       x: -totalWidth,
@@ -70,7 +77,7 @@ export default function Highlights() {
       track.removeEventListener("mouseenter", handleEnter);
       track.removeEventListener("mouseleave", handleLeave);
     };
-  }, []);
+  }, [cardWidth]);
 
   const doubled = [...linkedInPosts, ...linkedInPosts];
 
@@ -96,8 +103,8 @@ export default function Highlights() {
 
       {/* GSAP-powered infinite marquee */}
       <div className="relative">
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
 
         <div
           ref={trackRef}
@@ -108,12 +115,12 @@ export default function Highlights() {
             <div
               key={`${post.label}-${i}`}
               className="flex-shrink-0"
-              style={{ width: `${CARD_WIDTH}px` }}
+              style={{ width: `${cardWidth}px` }}
             >
               <div className="glass rounded-xl overflow-hidden p-1 h-full">
                 <iframe
                   src={post.src}
-                  height={CARD_HEIGHT}
+                  height={cardHeight}
                   width="100%"
                   frameBorder="0"
                   allowFullScreen
