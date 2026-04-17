@@ -368,6 +368,27 @@ const projects = [
     role: "Frontend Developer",
     duration: "5 weeks",
   },
+  {
+    title: "PDFWeaver",
+    slug: "pdfweaver",
+    desc: "Client-side PDF merger that combines PDFs and images into a single document instantly.",
+    imgPath: "/images/projects/pdfweaver.png",
+    tags: ["React", "PDF.js", "Vercel"],
+    category: "SaaS & Analytics",
+    order: 16,
+    problem: "Users frequently need to combine multiple PDFs and images into a single document but existing tools are either paid, require uploads to unknown servers, or install bloated desktop software. Privacy-conscious users had no lightweight, trustworthy option.",
+    solution: "Built PDFWeaver, a fully client-side PDF merger that processes everything in the browser with zero server uploads. Users can drag and drop PDFs, PNGs, JPGs, and other image formats, reorder them, and merge into a single PDF instantly. No data ever leaves the user's device.",
+    impact: [
+      "100% client-side processing — zero file uploads to any server",
+      "Supports PDF, PNG, JPG, JPEG, BMP, TIFF, and WEBP formats",
+      "Drag-and-drop interface with instant merge and download",
+      "Open-source and deployed on Vercel for free access",
+    ],
+    stack: ["React", "PDF-lib", "TypeScript", "Tailwind CSS", "Vercel"],
+    role: "Solo Developer",
+    duration: "1 week",
+    liveUrl: "https://pdfweaver.vercel.app",
+  },
 ];
 
 const stats = [

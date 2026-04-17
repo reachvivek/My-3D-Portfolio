@@ -104,3 +104,64 @@ const siteConfigSchema = new Schema({
 export const SiteConfig =
   mongoose.models.SiteConfig ||
   mongoose.model("SiteConfig", siteConfigSchema);
+
+// ── Blog Posts ──
+const blogPostSchema = new Schema({
+  title: String,
+  slug: { type: String, unique: true },
+  excerpt: String,
+  content: String, // markdown content
+  coverImage: String,
+  tags: [String],
+  published: { type: Boolean, default: false },
+  publishedAt: Date,
+  readTime: String,
+  claps: { type: Number, default: 0 },
+  views: { type: Number, default: 0 },
+  order: { type: Number, default: 0 },
+});
+export const BlogPost =
+  mongoose.models.BlogPost || mongoose.model("BlogPost", blogPostSchema);
+
+// -- Enquiries --
+const enquirySchema = new Schema({
+  name: String,
+  email: String,
+  message: String,
+  read: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+});
+export const Enquiry =
+  mongoose.models.Enquiry || mongoose.model("Enquiry", enquirySchema);
+
+// -- Orders --
+const orderSchema = new Schema({
+  name: String,
+  email: String,
+  phone: String,
+  company: String,
+  selectedPackage: String,
+  selectedTier: String,
+  vision: String,
+  references: String,
+  assets: [
+    {
+      name: String,
+      size: Number,
+      type: String,
+      data: String, // base64
+    },
+  ],
+  status: { type: String, default: "new" },
+  createdAt: { type: Date, default: Date.now },
+});
+export const Order =
+  mongoose.models.Order || mongoose.model("Order", orderSchema);
+
+// -- Admin Config --
+const adminConfigSchema = new Schema({
+  key: { type: String, unique: true },
+  value: String,
+});
+export const AdminConfig =
+  mongoose.models.AdminConfig || mongoose.model("AdminConfig", adminConfigSchema);

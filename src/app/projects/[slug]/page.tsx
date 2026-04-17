@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       ],
       type: "article",
-      url: `https://viveksingh.dev/projects/${slug}`,
+      url: `https://reachvivek.vercel.app/projects/${slug}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [project.imgPath],
     },
     alternates: {
-      canonical: `https://viveksingh.dev/projects/${slug}`,
+      canonical: `https://reachvivek.vercel.app/projects/${slug}`,
     },
   };
 }
@@ -75,21 +75,21 @@ export default async function ProjectPage({ params }: Props) {
     "@type": "Article",
     headline: `${project.title} - Case Study`,
     description: project.desc,
-    image: `https://viveksingh.dev${project.imgPath}`,
+    image: `https://reachvivek.vercel.app${project.imgPath}`,
     author: {
       "@type": "Person",
-      "@id": "https://viveksingh.dev/#person",
+      "@id": "https://reachvivek.vercel.app/#person",
       name: "Vivek Kumar Singh",
-      url: "https://viveksingh.dev",
+      url: "https://reachvivek.vercel.app",
     },
     publisher: {
       "@type": "Person",
       name: "Vivek Kumar Singh",
-      url: "https://viveksingh.dev",
+      url: "https://reachvivek.vercel.app",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://viveksingh.dev/projects/${slug}`,
+      "@id": `https://reachvivek.vercel.app/projects/${slug}`,
     },
     keywords: project.tags.join(", "),
     about: {
@@ -108,19 +108,19 @@ export default async function ProjectPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://viveksingh.dev",
+        item: "https://reachvivek.vercel.app",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Projects",
-        item: "https://viveksingh.dev/#work",
+        item: "https://reachvivek.vercel.app/#work",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: project.title,
-        item: `https://viveksingh.dev/projects/${slug}`,
+        item: `https://reachvivek.vercel.app/projects/${slug}`,
       },
     ],
   };

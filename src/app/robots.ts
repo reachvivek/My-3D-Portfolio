@@ -6,8 +6,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/admin", "/admin/*", "/api/*"],
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: ["/admin", "/admin/*", "/api/*"],
       },
     ],
-    sitemap: "https://viveksingh.dev/sitemap.xml",
+    sitemap: "https://reachvivek.vercel.app/sitemap.xml",
+    host: "https://reachvivek.vercel.app",
   };
 }

@@ -4,12 +4,15 @@ import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
 import Companies from "@/components/Companies";
 import Projects from "@/components/Projects";
-import Flagship from "@/components/Flagship";
+import CaseStudies from "@/components/CaseStudies";
+import WorldMap from "@/components/WorldMap";
 import Process from "@/components/Process";
 import Services from "@/components/Services";
 import TechStack3D from "@/components/TechStack3D";
 import Exploring from "@/components/Exploring";
 import Highlights from "@/components/Highlights";
+import GitHub from "@/components/GitHub";
+import BlogSection from "@/components/BlogSection";
 import Testimonials from "@/components/Testimonials";
 import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
@@ -32,13 +35,16 @@ export default async function Home() {
       <Stats stats={data.stats} />
       <Companies companies={data.companies} />
       <Projects projects={data.projects} />
-      <Flagship flagship={data.flagship} />
+      <CaseStudies projects={data.projects} />
+      <WorldMap />
       <Experience experiences={data.experiences} />
       <Process process={data.process} />
       <Services services={data.services} />
       <TechStack3D />
       <Exploring />
       <Highlights />
+      <GitHub />
+      <BlogSection posts={data.blogPosts} />
       <Testimonials testimonials={data.testimonials} />
       <Contact socialLinks={data.socialLinks} />
       <Footer socialLinks={data.socialLinks} />

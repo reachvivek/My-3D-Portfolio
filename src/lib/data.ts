@@ -7,6 +7,13 @@ export const projects = [
     category: "AI",
   },
   {
+    title: "AegisUAE",
+    desc: "Real-time airspace resilience dashboard built during the Iran-Israel conflict to combat misinformation with verified telemetry.",
+    imgPath: "/images/projects/aegis_uae.png",
+    tags: ["Next.js", "Deck.gl", "MapLibre", "OpenAI"],
+    category: "AI",
+  },
+  {
     title: "MyVisual.Space",
     desc: "Interior design visualization platform with immersive galleries.",
     imgPath: "/images/projects/myvisual_space.webp",
@@ -109,6 +116,13 @@ export const projects = [
     desc: "Interactive data visualizations with dynamic filtering.",
     imgPath: "/images/projects/d3_dashboard.webp",
     tags: ["Angular", "D3.js", "TypeScript"],
+    category: "SaaS & Analytics",
+  },
+  {
+    title: "PDFWeaver",
+    desc: "Client-side PDF merger that combines PDFs and images into a single document instantly.",
+    imgPath: "/images/projects/pdfweaver.png",
+    tags: ["React", "PDF.js", "Vercel"],
     category: "SaaS & Analytics",
   },
 ];

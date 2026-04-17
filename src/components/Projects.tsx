@@ -94,7 +94,7 @@ export default function Projects({ projects }: ProjectsProps) {
                           </span>
                         ))}
                       </div>
-                      <span className="text-[11px] text-gold/60 mt-1">View Case Study →</span>
+                      <span className="text-[11px] text-gold/60 mt-1">View Case Study &rarr;</span>
                     </div>
                   </div>
 

@@ -252,7 +252,7 @@ export default function Hero({ hero }: Readonly<HeroProps>) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 2.4 }}
-              className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.08]"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.08]"
             >
               {h.headline}
               <br />

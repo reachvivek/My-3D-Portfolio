@@ -64,20 +64,33 @@ export const metadata: Metadata = {
     "TypeScript developer Dubai",
     "Angular developer UAE",
     ".NET developer Dubai",
+    "developer GCC",
+    "AI engineer GCC",
+    "full stack developer Saudi Arabia",
+    "web developer Riyadh",
+    "AI developer Qatar",
+    "software engineer Bahrain",
+    "full stack developer Middle East",
+    "hire developer GCC",
+    "web app development GCC",
+    "AI solutions UAE",
+    "AI voice agent developer",
+    "crisis dashboard developer",
+    "fintech engineer Middle East",
   ],
-  authors: [{ name: "Vivek Kumar Singh", url: "https://viveksingh.dev" }],
+  authors: [{ name: "Vivek Kumar Singh", url: "https://reachvivek.vercel.app" }],
   creator: "Vivek Kumar Singh",
   publisher: "Vivek Kumar Singh",
-  metadataBase: new URL("https://viveksingh.dev"),
+  metadataBase: new URL("https://reachvivek.vercel.app"),
   openGraph: {
     title:
       "Vivek Kumar Singh | Full-Stack Developer & AI Engineer in Dubai, UAE",
     description:
       "Top-rated full-stack developer in Dubai, UAE. Engineering AI voice agents for Audi, Porsche & VW. Building fintech platforms for BSE & NSDL. 20+ systems delivered. Available for hire.",
     type: "website",
-    locale: "en_US",
+    locale: "en_AE",
     siteName: "Vivek Kumar Singh | Full-Stack Developer Dubai",
-    url: "https://viveksingh.dev",
+    url: "https://reachvivek.vercel.app",
     images: [
       {
         url: "/og-image.png",
@@ -107,7 +120,10 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://viveksingh.dev",
+    canonical: "https://reachvivek.vercel.app",
+    languages: {
+      "en-AE": "https://reachvivek.vercel.app",
+    },
   },
   category: "technology",
   verification: {
@@ -119,13 +135,13 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": "https://viveksingh.dev/#person",
+  "@id": "https://reachvivek.vercel.app/#person",
   name: "Vivek Kumar Singh",
   givenName: "Vivek",
   familyName: "Singh",
   jobTitle: "Full-Stack Developer & AI Engineer",
-  url: "https://viveksingh.dev",
-  image: "https://viveksingh.dev/og-image.png",
+  url: "https://reachvivek.vercel.app",
+  image: "https://reachvivek.vercel.app/og-image.png",
   email: "mailto:reachviveksingh@gmail.com",
   sameAs: [
     "https://github.com/reachvivek",
@@ -191,13 +207,13 @@ const personSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://viveksingh.dev/#website",
-  url: "https://viveksingh.dev",
+  "@id": "https://reachvivek.vercel.app/#website",
+  url: "https://reachvivek.vercel.app",
   name: "Vivek Kumar Singh | Full-Stack Developer & AI Engineer",
   description:
     "Portfolio of Vivek Kumar Singh, a top full-stack developer and AI engineer based in Dubai/Abu Dhabi, UAE.",
   publisher: {
-    "@id": "https://viveksingh.dev/#person",
+    "@id": "https://reachvivek.vercel.app/#person",
   },
   inLanguage: "en-US",
 };
@@ -205,11 +221,11 @@ const websiteSchema = {
 const profilePageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  "@id": "https://viveksingh.dev/#profilepage",
-  url: "https://viveksingh.dev",
+  "@id": "https://reachvivek.vercel.app/#profilepage",
+  url: "https://reachvivek.vercel.app",
   name: "Vivek Kumar Singh | Full-Stack Developer & AI Engineer",
   mainEntity: {
-    "@id": "https://viveksingh.dev/#person",
+    "@id": "https://reachvivek.vercel.app/#person",
   },
   dateCreated: "2024-01-01",
   dateModified: new Date().toISOString().split("T")[0],
@@ -220,7 +236,7 @@ const profilePageSchema = {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://viveksingh.dev",
+        item: "https://reachvivek.vercel.app",
       },
     ],
   },
@@ -229,12 +245,12 @@ const profilePageSchema = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "@id": "https://viveksingh.dev/#service",
+  "@id": "https://reachvivek.vercel.app/#service",
   name: "Vivek Kumar Singh - Full-Stack Development & AI Engineering",
   description:
     "Freelance full-stack developer and AI engineer offering web development, AI integration, fintech solutions, and mobile app development services in Dubai, Abu Dhabi, and across the UAE.",
-  url: "https://viveksingh.dev",
-  image: "https://viveksingh.dev/og-image.png",
+  url: "https://reachvivek.vercel.app",
+  image: "https://reachvivek.vercel.app/og-image.png",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
@@ -270,7 +286,7 @@ const localBusinessSchema = {
     "UI/UX Design",
   ],
   founder: {
-    "@id": "https://viveksingh.dev/#person",
+    "@id": "https://reachvivek.vercel.app/#person",
   },
 };
 
@@ -282,7 +298,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
         <meta name="geo.region" content="AE-AZ" />
         <meta name="geo.placename" content="Abu Dhabi" />
         <meta name="geo.position" content="24.4539;54.3773" />

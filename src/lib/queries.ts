@@ -9,6 +9,7 @@ import {
   SocialLink,
   SiteConfig,
   Experience,
+  BlogPost,
 } from "./models";
 
 // Helper to serialize mongoose docs to plain objects
@@ -86,10 +87,28 @@ export async function getSiteConfig(key: string) {
   return doc ? serializeOne(doc.value) : null;
 }
 
+export async function getBlogPosts() {
+  await connectDB();
+  const docs = await BlogPost.find({ published: true }).sort({ publishedAt: -1 }).lean();
+  return serialize(docs);
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  await connectDB();
+  const doc = await BlogPost.findOne({ slug, published: true }).lean();
+  return doc ? serializeOne(doc) : null;
+}
+
+export async function getAllBlogSlugs() {
+  await connectDB();
+  const docs = await BlogPost.find({ published: true }, { slug: 1 }).lean();
+  return docs.map((d: Record<string, unknown>) => d.slug as string);
+}
+
 export async function getAllPageData() {
   await connectDB();
 
-  const [projects, stats, process, companies, services, testimonials, socialLinks, experiences, navLinks, hero, flagship] =
+  const [projects, stats, process, companies, services, testimonials, socialLinks, experiences, navLinks, hero, flagship, blogPosts] =
     await Promise.all([
       getProjects(),
       getStats(),
@@ -102,7 +121,8 @@ export async function getAllPageData() {
       getSiteConfig("navLinks"),
       getSiteConfig("hero"),
       getSiteConfig("flagship"),
+      getBlogPosts(),
     ]);
 
-  return { projects, stats, process, companies, services, testimonials, socialLinks, experiences, navLinks, hero, flagship };
+  return { projects, stats, process, companies, services, testimonials, socialLinks, experiences, navLinks, hero, flagship, blogPosts };
 }
