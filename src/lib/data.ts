@@ -39,7 +39,21 @@ export const projects = [
     desc: "Premium car rental platform with real-time fleet availability.",
     imgPath: "/images/projects/luxury_car_rental.webp",
     tags: ["React", "Node.js", "Tailwind CSS"],
-    category: "Landing Pages",
+    category: "Automotive",
+  },
+  {
+    title: "XPENG UAE",
+    desc: "Production retail site for XPENG (NYSE: XPEV) × Ali & Sons. Model pricing, trim toggles, EMI calculator, multi-location showroom listings, Arabic RTL mirror.",
+    imgPath: "/images/projects/xpeng_uae.webp",
+    tags: ["Static HTML", "Webflow", "JavaScript", "RTL/i18n"],
+    category: "Automotive",
+  },
+  {
+    title: "Porsche Voice Booking Agent",
+    desc: "AI voice agent for dealership booking flows. Natural conversation, calendar integration, CRM handoff. Built for Ali & Sons × Porsche.",
+    imgPath: "/images/projects/porsche_voice_agent.webp",
+    tags: ["AI/ML", "Voice", "Next.js", "WebRTC"],
+    category: "Automotive",
   },
   {
     title: "QueryTube",
