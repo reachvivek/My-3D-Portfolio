@@ -126,6 +126,13 @@ export const metadata: Metadata = {
     },
   },
   category: "technology",
+  icons: {
+    icon: [
+      { url: "/photo.jpeg", type: "image/jpeg" },
+    ],
+    shortcut: "/photo.jpeg",
+    apple: "/photo.jpeg",
+  },
   verification: {
     // Add Google Search Console verification when available
     // google: "your-verification-code",
@@ -298,24 +305,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
         <meta name="geo.region" content="AE-AZ" />
         <meta name="geo.placename" content="Abu Dhabi" />
         <meta name="geo.position" content="24.4539;54.3773" />
         <meta name="ICBM" content="24.4539, 54.3773" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              personSchema,
-              websiteSchema,
-              profilePageSchema,
-              localBusinessSchema,
-            ]),
-          }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
       </head>
       <body className={`${inter.variable} antialiased grain`}>
         {children}

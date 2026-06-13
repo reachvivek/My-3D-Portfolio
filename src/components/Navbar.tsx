@@ -80,7 +80,7 @@ export default function Navbar({ navLinks }: NavbarProps) {
           >
             <a
               href="/resume.pdf"
-              download
+              download="Vivek_Singh_Full_Stack_Developer_UAE_2026.pdf"
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold tracking-wider uppercase rounded-full bg-gold text-black hover:bg-gold-light transition-all hover:shadow-[0_0_20px_rgba(212,168,83,0.25)]"
             >
               <Download className="w-3.5 h-3.5" />
@@ -160,7 +160,7 @@ export default function Navbar({ navLinks }: NavbarProps) {
               <div className="p-8 space-y-4 border-t border-white/6">
                 <a
                   href="/resume.pdf"
-                  download
+                  download="Vivek_Singh_Full_Stack_Developer_UAE_2026.pdf"
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium tracking-wider uppercase rounded-lg bg-gold text-black hover:bg-gold-light transition-all"
                 >
