@@ -312,9 +312,10 @@ export default function HeroShowcase({ hero, projects, experiences, stats = [] }
     const sec = sectionRef.current;
     const inner = which === "lap" ? lapInnerRef.current : phInnerRef.current;
     const el = (which === "lap" ? lapAnchors : phAnchors).current[key];
-    if (!L || !sec || !inner || !el) return;
-    const max = Math.max(1, inner.offsetHeight - (which === "lap" ? LAP_H - LAP_HEADER : L.ph.virtH - PHONE_HEADER));
-    const p = Math.min(1, el.offsetTop / max);
+    if (!L || !sec) return;
+    // no such section (or not measured yet): open the dossier at its start rather than doing nothing
+    const max = inner ? Math.max(1, inner.offsetHeight - (which === "lap" ? LAP_H - LAP_HEADER : L.ph.virtH - PHONE_HEADER)) : 1;
+    const p = el ? Math.min(1, el.offsetTop / max) : 0;
     window.scrollTo({ top: sec.offsetTop + L.b + p * (L.c - L.b) + 2, behavior: "smooth" });
   }, []);
 
@@ -400,7 +401,7 @@ export default function HeroShowcase({ hero, projects, experiences, stats = [] }
                   <Virtual w={PHONE_W} h={layout.ph.virtH} scale={layout.ph.screen}>
                     <span className="absolute left-1/2 z-30 rounded-full bg-black" style={{ top: 11, width: 118, height: 34, transform: "translateX(-50%)" }} />
                     <motion.div className="absolute inset-0" style={{ opacity: mv.phIntro }}>
-                      <PhoneProfile />
+                      <PhoneProfile onExplore={() => goTo("overview", layout.mobile ? "ph" : "lap")} />
                     </motion.div>
                     {layout.mobile && (
                       <motion.div className="absolute inset-0" style={{ opacity: mv.phMain, pointerEvents: phMainEvents }}>
@@ -737,30 +738,91 @@ function DossierRow({ item }: { item: ShowItem }) {
 
 /* ==================================================================== phone: profile (intro) */
 
-function PhoneProfile() {
-  const row = (label: string, value: React.ReactNode) => (
-    <div style={{ padding: "14px 0", borderTop: `1px solid ${LINE}` }}>
-      <div style={{ fontSize: 13, letterSpacing: "0.22em", textTransform: "uppercase", color: FAINT }}>{label}</div>
-      <div style={{ fontSize: 22, color: INK, marginTop: 4 }}>{value}</div>
-    </div>
-  );
+/** Profile card palette: warmer charcoal, antique gold, soft off-white. */
+const CARD_BG = "#0C0B0A";
+const ANTIQUE = "#BD9654";
+const IVORY = "rgba(240,235,225,0.92)";
+const IVORY_SOFT = "rgba(240,235,225,0.62)";
+const SPECIALIZATIONS = ["Fintech", "System Design", "Cloud", "Enterprise Apps", "Experience Design"];
+
+/** Rounded-square outline as one path, so the gold border can draw itself around the portrait. */
+function roundedRectPath(w: number, h: number, r: number, inset: number) {
+  const x0 = inset, y0 = inset, x1 = w - inset, y1 = h - inset;
+  return `M ${x0 + r} ${y0} H ${x1 - r} A ${r} ${r} 0 0 1 ${x1} ${y0 + r} V ${y1 - r} A ${r} ${r} 0 0 1 ${x1 - r} ${y1} H ${x0 + r} A ${r} ${r} 0 0 1 ${x0} ${y1 - r} V ${y0 + r} A ${r} ${r} 0 0 1 ${x0 + r} ${y0} Z`;
+}
+
+/**
+ * The phone's identity card. One sequence on load, no loops: the gold border draws around the portrait,
+ * name and role fade in, then the specialisations appear one by one.
+ */
+function PhoneProfile({ onExplore }: { onExplore: () => void }) {
+  const reduced = useReducedMotion();
+  const T0 = 2.4; // after the preloader
+  const enter = (delay: number) =>
+    reduced
+      ? { initial: false as const }
+      : { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: T0 + delay, ease: [0.22, 1, 0.36, 1] as const } };
+  const P = 128;
   return (
-    <div className="absolute inset-0 flex flex-col" style={{ background: "radial-gradient(90% 55% at 50% 0%,rgba(212,168,83,0.16),transparent 60%),#090807", padding: "70px 30px 40px" }}>
-      <div style={{ fontSize: 14, letterSpacing: "0.3em", color: "rgba(212,168,83,0.7)", fontFamily: "var(--font-mono), monospace" }}>V / PROFILE</div>
-      <div className="relative overflow-hidden" style={{ width: 150, height: 150, borderRadius: 34, border: "1px solid rgba(212,168,83,0.35)", background: "#111", marginTop: 26 }}>
-        <Image src="/images/vivek.png" alt="Vivek Kumar Singh" fill sizes="160px" style={{ objectFit: "cover", filter: "grayscale(1) contrast(1.1)" }} priority />
-        <motion.span
-          initial={{ top: "100%" }}
-          animate={{ top: ["100%", "-4%"] }}
-          transition={{ duration: 2.4, delay: 2.6, ease: "easeOut" }}
-          className="absolute left-0 right-0 h-[3px]"
-          style={{ background: "linear-gradient(90deg,transparent,#d4a853,transparent)", boxShadow: "0 0 18px rgba(212,168,83,0.7)" }}
-        />
+    <div className="absolute inset-0 flex flex-col" style={{ background: `radial-gradient(90% 50% at 50% 0%, rgba(189,150,84,0.13), transparent 62%), ${CARD_BG}`, padding: "72px 30px 34px" }}>
+      <div style={{ fontSize: 13, letterSpacing: "0.32em", color: "rgba(189,150,84,0.8)", fontFamily: "var(--font-mono), monospace" }}>V / PROFILE</div>
+
+      <div className="relative" style={{ width: P, height: P, marginTop: 30 }}>
+        <div className="absolute overflow-hidden" style={{ inset: 4, borderRadius: 26, background: "#141210" }}>
+          <Image src="/images/vivek.png" alt="Vivek Kumar Singh" fill sizes="140px" style={{ objectFit: "cover", objectPosition: "50% 30%", filter: "grayscale(1) contrast(1.12) brightness(1.02)" }} priority />
+        </div>
+        <svg className="absolute inset-0" width={P} height={P} viewBox={`0 0 ${P} ${P}`} aria-hidden="true">
+          <motion.path
+            d={roundedRectPath(P, P, 29, 0.75)}
+            fill="none"
+            stroke={ANTIQUE}
+            strokeWidth={1.5}
+            initial={reduced ? false : { pathLength: 0, opacity: 0.4 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: T0, ease: [0.65, 0, 0.35, 1] }}
+          />
+        </svg>
       </div>
-      <p style={{ fontSize: 32, fontWeight: 600, color: INK, margin: "24px 0 6px", lineHeight: 1.1 }}>Vivek Kumar Singh</p>
-      <p style={{ fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: GOLD, margin: "0 0 26px" }}>Software Developer &amp; Architect</p>
-      {row("Focus", "Fintech · Architecture")}
-      {row("Based", <Location size={20} />)}
+
+      <motion.p {...enter(0.7)} style={{ fontSize: 30, fontWeight: 600, color: IVORY, margin: "22px 0 0", lineHeight: 1.1, letterSpacing: "-0.01em" }}>
+        Vivek Kumar Singh
+      </motion.p>
+      <motion.p {...enter(0.85)} style={{ fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", color: ANTIQUE, margin: "9px 0 0", whiteSpace: "nowrap" }}>
+        Software Developer / Architect
+      </motion.p>
+      <motion.p {...enter(1.05)} style={{ fontFamily: "var(--font-instrument), serif", fontSize: 22, lineHeight: 1.3, color: IVORY_SOFT, margin: "20px 0 0", maxWidth: 310 }}>
+        Building scalable systems and meaningful digital experiences.
+      </motion.p>
+
+      <motion.div {...enter(1.3)} style={{ width: 44, height: 1, background: "rgba(189,150,84,0.35)", margin: "26px 0 18px" }} />
+      <motion.div {...enter(1.35)} style={{ fontSize: 11, letterSpacing: "0.26em", textTransform: "uppercase", color: "rgba(240,235,225,0.42)" }}>
+        Specializations
+      </motion.div>
+      <div className="flex flex-wrap" style={{ gap: 8, marginTop: 12 }}>
+        {SPECIALIZATIONS.map((t, k) => (
+          <motion.span key={t} {...enter(1.5 + k * 0.12)} style={{ fontSize: 14, padding: "7px 13px", borderRadius: 999, border: "1px solid rgba(189,150,84,0.32)", color: IVORY }}>
+            {t}
+          </motion.span>
+        ))}
+      </div>
+      <motion.div {...enter(2.05)} style={{ marginTop: 22 }}>
+        <Location size={16} label="Abu Dhabi, UAE" color={IVORY_SOFT} />
+      </motion.div>
+
+      <motion.button
+        {...enter(2.25)}
+        type="button"
+        onClick={onExplore}
+        className="flex flex-col items-center"
+        style={{ marginTop: "auto", gap: 10, alignSelf: "center", fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", color: ANTIQUE, background: "none", border: 0, cursor: "pointer", padding: 8 }}
+      >
+        Explore my work
+        <motion.span
+          animate={reduced ? undefined : { scaleY: [0.4, 1, 0.4], originY: 0 }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: T0 + 2.6 }}
+          style={{ display: "block", width: 1, height: 26, background: `linear-gradient(${ANTIQUE}, transparent)` }}
+        />
+      </motion.button>
     </div>
   );
 }

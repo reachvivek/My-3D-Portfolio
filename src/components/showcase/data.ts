@@ -56,7 +56,7 @@ const LOGO: Record<string, Logo> = {
   porsche: { name: "Porsche", src: "/images/logos/porsche-crest.svg", h: 44 },
   audi: { name: "Audi", src: "/images/logos/audi.svg", h: 30 },
   vw: { name: "Volkswagen", src: "/images/logos/volkswagen.svg", h: 34 },
-  xpeng: { name: "XPENG", text: "XPENG", h: 22 },
+  xpeng: { name: "XPENG", src: "/images/logos/xpeng-logo.svg", h: 16 },
   rufescent: { name: "The Rufescent", src: "/images/logos/rufescent-crest.png", h: 44 },
 };
 
@@ -68,10 +68,8 @@ export const BRANDS: Logo[] = [
   { name: "NSDL", src: "/images/logos/nsdl-mark.png", ratio: 0.926, h: 42 },
   { name: "Volkswagen", src: "/images/logos/volkswagen-mark.png", tint: "#001E50", ratio: 1, h: 42 },
   { name: "ICCL", src: "/images/logos/iccl-mark.png", colorSrc: "/images/logos/iccl-color-mark.png", ratio: 1.642, h: 39 },
-  { name: "XPENG", text: "XPENG", color: "#111111", h: 20 },
+  { name: "XPENG", src: "/images/logos/xpeng-logo.svg", ratio: 8.167, h: 14 },
   { name: "CMS Info Systems", src: "/images/logos/cms-mark.png", text: "CMS", color: "#1d2a5c", ratio: 2.755, h: 26 },
-  { name: "Ali & Sons", src: "/images/logos/alisons-mark.png", ratio: 0.869, h: 42 },
-  { name: "Azaya", text: "AZAYA", color: "#0e2a5c", h: 20 },
   { name: "Oneture Technologies", src: "/images/logos/oneture-mark.png", text: "ONETURE", color: "#1e3a8a", ratio: 0.998, h: 26 },
   { name: "Hoopr", src: "/images/logos/hoopr-mark.png", plate: "#0d0d0d", ratio: 2.308, h: 33 },
   { name: "Blackcurrant Labs", src: "/images/logos/blc-mark.png", text: "BLACKCURRANT", color: "#3b1452", ratio: 0.665, h: 26 },

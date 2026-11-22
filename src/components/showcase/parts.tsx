@@ -521,14 +521,14 @@ export function UaeFlag({ h }: { h: number }) {
 }
 
 /** Flag + gold pin + city: "currently in Abu Dhabi". */
-export function Location({ size }: { size: number }) {
+export function Location({ size, label = "Abu Dhabi", color = "rgba(255,255,255,0.85)" }: { size: number; label?: string; color?: string }) {
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: size * 0.55, color: "rgba(255,255,255,0.85)", fontSize: size, lineHeight: 1 }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: size * 0.55, color, fontSize: size, lineHeight: 1 }}>
       <UaeFlag h={size * 0.95} />
       <svg width={size} height={size} viewBox="0 0 24 24" fill={GOLD} aria-hidden="true" style={{ flexShrink: 0 }}>
         <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
       </svg>
-      Abu Dhabi
+      {label}
     </span>
   );
 }
