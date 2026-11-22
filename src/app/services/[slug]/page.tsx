@@ -91,7 +91,7 @@ const SERVICES: Record<string, ServicePage> = {
       "Top-rated full stack developer in the UAE. 20+ production systems delivered for BSE, NSDL, Audi & more. Expert in Next.js, React, Node.js, Python. Available for hire in Dubai & Abu Dhabi.",
     heroLine: "Full-Stack Development",
     heroAccent: "Across the UAE",
-    intro: "I'm a full-stack developer with 4+ years of production experience, based in Abu Dhabi and serving clients across the UAE. I've shipped 20+ systems spanning fintech platforms for stock exchanges, AI-powered dashboards for automotive groups, and SaaS products for startups. I own the entire stack, from database design to pixel-perfect frontends to deployment pipelines.",
+    intro: "I'm a full-stack developer with 5+ years of production experience, based in Abu Dhabi and serving clients across the UAE. I've shipped 20+ systems spanning fintech platforms for stock exchanges, AI-powered dashboards for automotive groups, and SaaS products for startups. I own the entire stack, from database design to pixel-perfect frontends to deployment pipelines.",
     offerings: [
       {
         title: "Web Applications",
@@ -196,7 +196,7 @@ const SERVICES: Record<string, ServicePage> = {
     metaTitle:
       "React Developer Dubai | Vivek Kumar Singh | React, Next.js, TypeScript",
     metaDescription:
-      "Senior React developer in Dubai with 4+ years building complex SPAs, dashboards, and web apps. Expert in React 19, Next.js, TypeScript, and state management. Hire me for your next project.",
+      "Senior React developer in Dubai with 5+ years building complex SPAs, dashboards, and web apps. Expert in React 19, Next.js, TypeScript, and state management. Hire me for your next project.",
     heroLine: "React Development",
     heroAccent: "in Dubai",
     intro: "React is my primary frontend framework, and I've been building with it since the class component days. Today, I work with React 19, Server Components, and the latest Next.js App Router to build interfaces that are fast, accessible, and maintainable. From real-time dashboards to complex multi-step forms, I know how to architect React applications that don't fall apart at scale.",

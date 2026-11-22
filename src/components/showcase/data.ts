@@ -36,7 +36,14 @@ export type ShowItem = {
   href?: string;
   live?: string;
   role?: string;
+  /** Shown in place of the text tag: the organisation's own logo (light version for the dark UI). */
+  tagLogo?: { src: string; name: string };
+  /** App-store icon image, when the product has a real one. */
+  icon?: string;
 };
+
+const ALI_AND_SONS = { src: "/images/logos/alisons-logo-dark.png", name: "Ali & Sons" };
+const AMAN_ICON = "/images/logos/aman-app-icon.png";
 
 export type Sector = {
   id: string;
@@ -107,6 +114,8 @@ const STATIC: Record<string, ShowItem> = {
     key: "aman-dms-mobile",
     title: "AMAN DMS Mobile",
     tag: "Ali & Sons",
+    tagLogo: ALI_AND_SONS,
+    icon: AMAN_ICON,
     desc: "The dealer management system on the phone for sales, service, drivers and warehouse staff.",
     problem: "Dealership teams could only reach approvals, deals and job cards from a desk.",
     impact: ["One React Native app for iOS and Android", ".NET API writing to the DMS through stored procedures", "Approvals, deals, job cards, parking, stock in one app"],
@@ -118,6 +127,8 @@ const STATIC: Record<string, ShowItem> = {
     key: "aman-go-live",
     title: "AMAN Go-Live Command Centre",
     tag: "Ali & Sons",
+    tagLogo: ALI_AND_SONS,
+    icon: AMAN_ICON,
     desc: "An executive control room for the DMS roll-out across XPENG, MG, Audi, Volkswagen, Škoda and Porsche.",
     problem: "Leadership needed one screen to see readiness, blockers and the next brand wave.",
     impact: ["Readiness, blockers and next wave at a glance", "React on ASP.NET Core, Dapper and SQL Server", "Built for live executive reviews"],

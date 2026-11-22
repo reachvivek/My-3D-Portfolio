@@ -30,7 +30,7 @@ export default function About() {
             Engineering is a <em className="text-gold">promise</em> kept.
           </motion.h2>
           <motion.p {...reveal(2)} className="mt-8 max-w-xl text-base leading-relaxed text-white/55">
-            Software developer and architect with 4+ years shipping fintech, payments and enterprise platforms: MT5 trading for UAE-licensed brokers, payment gateways across the GCC, and data systems for BSE and NSDL. Today I build dealer systems and AI agents at Ali &amp; Sons in Abu Dhabi.
+            Software developer and architect with 5+ years shipping fintech, payments and enterprise platforms: MT5 trading for UAE-licensed brokers, payment gateways across the GCC, and data systems for BSE and NSDL. Today I build dealer systems and AI agents at Ali &amp; Sons in Abu Dhabi.
           </motion.p>
           <motion.div {...reveal(3)} className="mt-10 flex flex-wrap gap-3">
             <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-gold px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-gold-light">

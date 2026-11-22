@@ -222,7 +222,7 @@ const personSchema = {
     "Machine Learning",
   ],
   description:
-    "Top full-stack developer and AI engineer based in Abu Dhabi, UAE. 4+ years building production systems across AI, fintech, healthcare, and SaaS. 20+ systems delivered for clients including BSE, NSDL, Audi, Porsche, and Volkswagen. Expert in Next.js, React, Node.js, Python, and AI/ML.",
+    "Top full-stack developer and AI engineer based in Abu Dhabi, UAE. 5+ years building production systems across AI, fintech, healthcare, and SaaS. 20+ systems delivered for clients including BSE, NSDL, Audi, Porsche, and Volkswagen. Expert in Next.js, React, Node.js, Python, and AI/ML.",
   nationality: {
     "@type": "Country",
     name: "India",

@@ -36,7 +36,7 @@ export const clampLines = (n: number): CSSProperties => ({
 
 /** Typed on load: short on purpose, the rest is revealed by scrolling. */
 export const TYPING_TEXT = `$ whoami
-> Vivek Singh. Software developer & architect.
+> Vivek. Software developer & architect.
 > Fintech & payments ·¹²³⁴⁵
 > Built for BSE, NSDL, CMS, Porsche & Audi.`;
 
@@ -377,27 +377,180 @@ function MockTrading() {
   );
 }
 
-function MockAmanMobile() {
-  const rows = ["Approvals", "Leads & deals", "Job cards", "Parking & collection", "Goods receiving", "Stock checks"];
+/* AMAN DMS, rebuilt from the app's own design tokens (palette.json): navy header, white cards, slate text. */
+const AM = {
+  navy: "#1E2D6B", brand: "#2B4094", brandTint: "#EEF2FF", page: "#EEF2F7", card: "#FFFFFF", text: "#1E293B",
+  text2: "#475569", text3: "#64748B", border: "#E2E8F0", onNavy2: "#CBD5E1", success: "#1E7A5A", warning: "#A7833D", danger: "#C04A4A",
+};
+
+/** An iPhone-style frame around a 300 × 650 screen, scaled to `scale`. */
+function AmanPhone({ scale, children }: { scale: number; children: ReactNode }) {
   return (
-    <div style={{ position: "absolute", inset: 0, background: "radial-gradient(80% 90% at 50% 0%,rgba(212,168,83,0.14),transparent 60%),#0b0b0b", display: "flex", alignItems: "center", justifyContent: "center", gap: 28 }}>
-      <div style={{ width: 150, height: 290, borderRadius: 28, border: "5px solid #222", background: "#111", padding: "22px 12px", display: "flex", flexDirection: "column", gap: 7 }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>AMAN DMS</span>
-        {rows.map((r, i) => (
-          <span key={r} style={{ fontSize: 10.5, padding: "8px 9px", borderRadius: 9, background: i === 0 ? "rgba(212,168,83,0.14)" : "rgba(255,255,255,0.04)", color: i === 0 ? GOLD : MUTED }}>
-            {r}
-          </span>
-        ))}
+    <div style={{ width: 300 * scale + 14, height: 650 * scale + 14, borderRadius: 46 * scale + 7, padding: 7, background: "linear-gradient(145deg,#3a3a3c,#0c0c0d 40%,#1c1c1e 75%,#3a3a3c)", boxShadow: "0 30px 60px -20px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(255,255,255,0.1)", flexShrink: 0 }}>
+      <div style={{ position: "relative", width: 300 * scale, height: 650 * scale, borderRadius: 40 * scale, overflow: "hidden", background: AM.page }}>
+        <div style={{ position: "absolute", left: 0, top: 0, width: 300, height: 650, transform: `scale(${scale})`, transformOrigin: "0 0", fontFamily: "-apple-system, 'SF Pro Text', Inter, system-ui, sans-serif" }}>
+          {children}
+          <span style={{ position: "absolute", left: "50%", top: 10, width: 96, height: 28, borderRadius: 20, background: "#000", transform: "translateX(-50%)" }} />
+        </div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 12, color: MUTED, maxWidth: 230 }}>
-        <span style={{ fontSize: 11, letterSpacing: "0.18em", color: FAINT, textTransform: "uppercase" }}>One app for</span>
-        {["Sales", "Service", "Drivers", "Warehouse"].map((x) => (
-          <span key={x} style={{ color: INK, fontSize: 16 }}>
-            {x}
-          </span>
-        ))}
-        <span style={{ fontSize: 11, color: FAINT, marginTop: 6 }}>Illustration · no client data</span>
+    </div>
+  );
+}
+
+function AmanStatusBar() {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 26px 0", color: "#fff", fontSize: 13, fontWeight: 600 }}>
+      <span>9:41</span>
+      <span style={{ display: "flex", gap: 5, alignItems: "center" }}>
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="#fff"><rect x="0" y="6" width="3" height="4" rx="1" /><rect x="4.3" y="4" width="3" height="6" rx="1" /><rect x="8.6" y="2" width="3" height="8" rx="1" /><rect x="12.9" y="0" width="3" height="10" rx="1" /></svg>
+        <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="19" height="10" rx="3" fill="none" stroke="#fff" strokeOpacity="0.5" /><rect x="2" y="2" width="14" height="7" rx="1.6" fill="#fff" /></svg>
+      </span>
+    </div>
+  );
+}
+
+const amIcon = {
+  chart: "M5 19V11M12 19V5M19 19v-6",
+  check: "M4 12.5l5 5L20 7",
+  chat: "M4 5h16v11H9l-5 4z",
+  bag: "M4 8h16v12H4zM9 8V5h6v3",
+  bell: "M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0",
+  back: "M15 5l-7 7 7 7",
+};
+const AmSvg = ({ d, size = 18, color = AM.brand }: { d: string; size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+);
+const Initials = ({ t, size, bg = AM.brandTint, fg = AM.brand }: { t: string; size: number; bg?: string; fg?: string }) => (
+  <span style={{ width: size, height: size, borderRadius: 99, background: bg, color: fg, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.36, fontWeight: 700, flexShrink: 0 }}>{t}</span>
+);
+
+function AmanTabBar({ active }: { active: number }) {
+  const tabs: [string, string][] = [["Dashboard", amIcon.chart], ["Approvals", amIcon.check], ["Messages", amIcon.chat], ["Deals", amIcon.bag]];
+  return (
+    <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 74, background: AM.card, borderTop: `1px solid ${AM.border}`, display: "flex", justifyContent: "space-around", paddingTop: 10 }}>
+      {tabs.map(([t, d], k) => (
+        <span key={t} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, fontSize: 10.5, fontWeight: k === active ? 700 : 500, color: k === active ? AM.brand : AM.text3 }}>
+          <AmSvg d={d} size={20} color={k === active ? AM.brand : AM.text3} />
+          {t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function AmanOverviewScreen() {
+  const stat = (icon: string, label: string, value: ReactNode, cap: string) => (
+    <div style={{ background: AM.card, border: `1px solid ${AM.border}`, borderRadius: 14, padding: "10px 11px", boxShadow: "0 1px 2px rgba(15,23,42,0.05)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11.5, color: AM.text2 }}>
+        <span style={{ width: 22, height: 22, borderRadius: 99, background: AM.brandTint, display: "inline-flex", alignItems: "center", justifyContent: "center" }}><AmSvg d={icon} size={12} /></span>
+        {label}
       </div>
+      <div style={{ fontSize: 22, fontWeight: 800, marginTop: 6, lineHeight: 1 }}>{value}</div>
+      <div style={{ fontSize: 8, letterSpacing: "0.08em", color: AM.text2, marginTop: 5, fontWeight: 600 }}>{cap}</div>
+    </div>
+  );
+  const gm = (ini: string, name: string, brand: string, c: number, o: number) => (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, background: AM.card, border: `1px solid ${AM.border}`, borderRadius: 14, padding: "10px 11px", marginTop: 8 }}>
+      <Initials t={ini} size={34} bg="#DCE3F5" fg={AM.navy} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: AM.text }}>{name}</div>
+        <div style={{ fontSize: 10.5, color: AM.text2 }}>{brand}</div>
+        <div style={{ fontSize: 10.5, color: AM.text2, marginTop: 1 }}>
+          Deals: <b style={{ color: AM.success }}>{c}</b> closed · <b style={{ color: AM.text }}>{o}</b> open
+        </div>
+      </div>
+      <AmSvg d="M9 5l7 7-7 7" size={14} color={AM.text3} />
+    </div>
+  );
+  return (
+    <div style={{ position: "absolute", inset: 0, background: AM.page, color: AM.text }}>
+      <div style={{ background: AM.navy, borderRadius: "0 0 22px 22px", paddingBottom: 14 }}>
+        <AmanStatusBar />
+        <div style={{ position: "relative", textAlign: "center", marginTop: 12 }}>
+          <img src="/images/logos/aman-logo.png" alt="AMAN" style={{ height: 26, width: "auto", display: "block", margin: "0 auto" }} />
+          <div style={{ color: "#fff", fontSize: 17, fontWeight: 700, marginTop: 6 }}>Group Overview</div>
+          <div style={{ color: AM.onNavy2, fontSize: 11 }}>Sara · Managing Director</div>
+          <span style={{ position: "absolute", left: 16, top: 28 }}><Initials t="SA" size={30} bg="rgba(255,255,255,0.14)" fg="#fff" /></span>
+          <span style={{ position: "absolute", right: 16, top: 28, width: 30, height: 30, borderRadius: 99, background: "rgba(255,255,255,0.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+            <AmSvg d={amIcon.bell} size={15} color="#fff" />
+            <span style={{ position: "absolute", top: -3, right: -3, width: 14, height: 14, borderRadius: 99, background: AM.danger, color: "#fff", fontSize: 8.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>2</span>
+          </span>
+        </div>
+      </div>
+      <div style={{ padding: "12px 14px 0" }}>
+        <div style={{ fontSize: 16, fontWeight: 800 }}>Good evening, Sara.</div>
+        <div style={{ fontSize: 11, color: AM.text2, marginTop: 2 }}>You have 3 approvals awaiting your decision.</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 10 }}>
+          {stat(amIcon.check, "Approvals", <span style={{ color: AM.warning }}>3</span>, "PENDING YOUR DECISION")}
+          {stat(amIcon.bag, "Deals", <><span style={{ color: AM.success }}>96</span><span style={{ color: AM.text3, fontWeight: 400 }}> | </span>164</>, "CLOSED | OPEN")}
+          {stat(amIcon.chat, "Messages", <span style={{ color: AM.success }}>4</span>, "UNREAD")}
+          {stat(amIcon.bell, "Notifications", <span style={{ color: AM.warning }}>2</span>, "NEED ATTENTION")}
+        </div>
+        <div style={{ fontSize: 9.5, letterSpacing: "0.12em", color: AM.text2, fontWeight: 700, marginTop: 12 }}>GENERAL MANAGERS · NOVEMBER</div>
+        {gm("OH", "Omar Haddad", "SKODA", 12, 18)}
+        {gm("DR", "Daniel Reyes", "AUDI · Volkswagen", 41, 77)}
+      </div>
+      <AmanTabBar active={0} />
+    </div>
+  );
+}
+
+function AmanApprovalsScreen() {
+  const req = (kind: string, title: string, meta: string, amount: string, ini: string) => (
+    <div style={{ background: AM.card, border: `1px solid ${AM.border}`, borderRadius: 14, padding: "11px 12px", marginTop: 9 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: AM.brand, background: AM.brandTint, borderRadius: 99, padding: "3px 8px" }}>{kind}</span>
+        <span style={{ fontSize: 13, fontWeight: 800, color: AM.text }}>{amount}</span>
+      </div>
+      <div style={{ fontSize: 13, fontWeight: 700, marginTop: 7 }}>{title}</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 10.5, color: AM.text2, marginTop: 4 }}>
+        <Initials t={ini} size={18} />
+        {meta}
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, marginTop: 10 }}>
+        <span style={{ textAlign: "center", fontSize: 11.5, fontWeight: 700, color: AM.danger, border: `1px solid #E6BDBD`, borderRadius: 10, padding: "7px 0" }}>Reject</span>
+        <span style={{ textAlign: "center", fontSize: 11.5, fontWeight: 700, color: "#fff", background: `linear-gradient(180deg, ${AM.brand}, ${AM.navy})`, borderRadius: 10, padding: "7px 0" }}>Approve</span>
+      </div>
+    </div>
+  );
+  return (
+    <div style={{ position: "absolute", inset: 0, background: AM.page, color: AM.text }}>
+      <div style={{ background: AM.navy, borderRadius: "0 0 22px 22px", paddingBottom: 16 }}>
+        <AmanStatusBar />
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 16px 0" }}>
+          <AmSvg d={amIcon.back} size={18} color="#fff" />
+          <div>
+            <div style={{ color: "#fff", fontSize: 17, fontWeight: 700 }}>Approvals</div>
+            <div style={{ color: AM.onNavy2, fontSize: 11 }}>3 waiting on you</div>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: "12px 14px 0" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#E2E8F0", borderRadius: 11, padding: 3, fontSize: 11, fontWeight: 600, textAlign: "center" }}>
+          <span style={{ background: AM.card, borderRadius: 9, padding: "6px 0", color: AM.text, boxShadow: "0 1px 2px rgba(15,23,42,0.08)" }}>Pending · 3</span>
+          <span style={{ padding: "6px 0", color: AM.text3 }}>Approved</span>
+          <span style={{ padding: "6px 0", color: AM.text3 }}>Rejected</span>
+        </div>
+        {req("DISCOUNT", "Audi Q5 Sportback · S line", "L. Mendes · Sales advisor", "AED 4,500", "LM")}
+        {req("LPO", "Workshop parts · 14 lines", "R. Khan · Parts", "AED 12,840", "RK")}
+      </div>
+      <AmanTabBar active={1} />
+    </div>
+  );
+}
+
+function MockAmanMobile() {
+  return (
+    <div style={{ position: "absolute", inset: 0, background: "radial-gradient(70% 80% at 50% 0%, rgba(43,64,148,0.35), transparent 65%), #0b0b0d", display: "flex", alignItems: "center", justifyContent: "center", gap: 22 }}>
+      <AmanPhone scale={0.44}>
+        <AmanOverviewScreen />
+      </AmanPhone>
+      <div style={{ transform: "translateY(10px)" }}>
+        <AmanPhone scale={0.44}>
+          <AmanApprovalsScreen />
+        </AmanPhone>
+      </div>
+      <span style={{ position: "absolute", right: 30, top: 36, fontSize: 9.5, letterSpacing: "0.12em", color: "rgba(255,255,255,0.45)" }}>DEMO DATA</span>
     </div>
   );
 }
@@ -481,7 +634,7 @@ export function Thumb({ item, w, h, sizes, rounded = 14 }: { item: ShowItem; w: 
   return (
     <div style={{ position: "relative", width: w, height: h, borderRadius: rounded, overflow: "hidden", border: `1px solid ${LINE}`, background: "#0b0b0b", flexShrink: 0 }}>
       {MockView ? (
-        <div style={{ position: "absolute", left: 0, top: 0, width: 520, height: 325, transform: `scale(${w / 520}, ${h / 325})`, transformOrigin: "0 0" }}>
+        <div style={{ position: "absolute", left: (w - 520 * Math.max(w / 520, h / 325)) / 2, top: (h - 325 * Math.max(w / 520, h / 325)) / 2, width: 520, height: 325, transform: `scale(${Math.max(w / 520, h / 325)})`, transformOrigin: "0 0" }}>
           <MockView />
         </div>
       ) : item.img ? (
@@ -495,7 +648,9 @@ export function Thumb({ item, w, h, sizes, rounded = 14 }: { item: ShowItem; w: 
 export function AppIcon({ item, size }: { item: ShowItem; size: number }) {
   return (
     <div style={{ position: "relative", width: size, height: size, borderRadius: size * 0.23, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
-      {item.img && !item.mock ? (
+      {item.icon ? (
+        <Image src={item.icon} alt="" fill sizes={`${Math.round(size)}px`} style={{ objectFit: "cover" }} />
+      ) : item.img && !item.mock ? (
         <Image src={item.img} alt="" fill sizes={`${Math.round(size)}px`} style={{ objectFit: "cover", objectPosition: "top left" }} />
       ) : (
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(140deg,#3a2c14,#0f0c08 70%)", color: GOLD, fontWeight: 700, fontSize: size * (item.glyph && item.glyph.length > 2 ? 0.26 : 0.36), letterSpacing: "0.04em" }}>

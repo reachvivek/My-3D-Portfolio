@@ -42,9 +42,9 @@ const projectSchema = new mongoose.Schema({
 const Project = mongoose.model("Project", projectSchema);
 
 const rufescent = {
-  "title": "The Rufescent · Private Invitations",
+  "title": "The 1% Members Club Experience",
   "slug": "the-rufescent-private-invitations",
-  "desc": "Members' club concept for Dubai: invite by name or private link, break a wax seal, receive a live pass, check in at the door.",
+  "desc": "A private members' club experience for The Rufescent, Dubai: invite by name or private link, break a wax seal, receive a live pass, check in at the door.",
   "imgPath": "/images/projects/the_rufescent.webp",
   "tags": [
     "React",

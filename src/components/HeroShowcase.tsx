@@ -694,7 +694,11 @@ function DossierRow({ item }: { item: ShowItem }) {
     <div className="grid" style={{ gridTemplateColumns: "520px 1fr", gap: 52, padding: "34px 0", borderTop: `1px solid ${LINE}` }}>
       <Thumb item={item} w={520} h={325} sizes="440px" rounded={16} />
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {item.tag && <span style={{ alignSelf: "flex-start", fontSize: 14, letterSpacing: "0.16em", textTransform: "uppercase", color: GOLD, border: "1px solid rgba(212,168,83,0.35)", borderRadius: 999, padding: "6px 14px" }}>{item.tag}</span>}
+        {item.tagLogo ? (
+          <img src={item.tagLogo.src} alt={item.tagLogo.name} title={item.tagLogo.name} style={{ alignSelf: "flex-start", height: 40, width: "auto" }} />
+        ) : (
+          item.tag && <span style={{ alignSelf: "flex-start", fontSize: 14, letterSpacing: "0.16em", textTransform: "uppercase", color: GOLD, border: "1px solid rgba(212,168,83,0.35)", borderRadius: 999, padding: "6px 14px" }}>{item.tag}</span>
+        )}
         <h4 style={{ fontSize: 36, fontWeight: 600, color: INK, margin: "14px 0 8px", letterSpacing: "-0.01em" }}>{item.title}</h4>
         <p style={{ fontSize: 20, color: MUTED, margin: 0, ...clampLines(2) }}>{item.desc}</p>
         {item.role && (
@@ -907,7 +911,11 @@ function Store({
                 <FeaturedWrap item={featured}>
                   <Thumb item={featured} w={358} h={200} sizes="300px" rounded={18} />
                   <div style={{ padding: "12px 4px 8px" }}>
-                    <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD }}>{featured.tag}</div>
+                    {featured.tagLogo ? (
+                      <img src={featured.tagLogo.src} alt={featured.tagLogo.name} title={featured.tagLogo.name} style={{ height: 24, width: "auto", display: "block" }} />
+                    ) : (
+                      <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD }}>{featured.tag}</div>
+                    )}
                     <div style={{ fontSize: 20, fontWeight: 700, color: INK, marginTop: 4 }}>{featured.title}</div>
                     <div style={{ fontSize: 13, color: MUTED, marginTop: 3, ...clampLines(2) }}>{featured.impact[0] ?? featured.desc}</div>
                   </div>
