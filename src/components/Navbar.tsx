@@ -14,6 +14,8 @@ const PRIMARY: NavLinkData[] = [
   { name: "Technical Arsenal", href: "#skills" },
   { name: "Contact", href: "#contact" },
 ];
+/** Sections no longer on the home page; CMS links pointing at them are not shown. */
+const HIDDEN = ["#services"];
 const CALENDLY = "https://calendly.com/rogerthatvivek/30min";
 const EASE = [0.76, 0, 0.24, 1] as const;
 
@@ -32,7 +34,7 @@ const defaultNavLinks: NavLinkData[] = [
 ];
 
 export default function Navbar({ navLinks }: NavbarProps) {
-  const secondary = (navLinks || defaultNavLinks).filter((l) => !PRIMARY.some((p) => p.href === l.href));
+  const secondary = (navLinks || defaultNavLinks).filter((l) => !PRIMARY.some((p) => p.href === l.href) && !HIDDEN.includes(l.href));
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 

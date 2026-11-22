@@ -77,6 +77,21 @@ export const BRANDS: Logo[] = [
   { name: "Blackcurrant Labs", src: "/images/logos/blc-mark.png", text: "BLACKCURRANT", color: "#3b1452", ratio: 0.665, h: 26 },
 ];
 
+export type Exposure = { sector: string; logos: Logo[]; also?: string; role: string; years: string; city: string };
+
+const brand = (...names: string[]) => names.map((n) => BRANDS.find((b) => b.name === n)).filter((b): b is Logo => !!b);
+
+/**
+ * Who the work was for, and in what capacity. Relationships follow the experience entries:
+ * capital-markets work was delivered as client engagements through Oneture; automotive is in-house at Ali & Sons.
+ */
+export const EXPOSURE: Exposure[] = [
+  { sector: "Capital markets", logos: brand("BSE", "NSDL", "ICCL", "CMS Info Systems"), role: "Client engagements via Oneture Technologies", years: "2024 – 2025", city: "Mumbai" },
+  { sector: "Brokerage & payments", logos: brand("Azaya"), also: "N-Genius · e& Payments · MyFatoorah", role: "Lead full-stack engineer at Azaya", years: "2025 – 2026", city: "Dubai" },
+  { sector: "Automotive", logos: brand("Porsche", "Audi", "Volkswagen", "XPENG"), role: "In-house at Ali & Sons, the group behind these dealerships", years: "2026 – now", city: "Abu Dhabi" },
+  { sector: "AI products", logos: brand("Hoopr", "Blackcurrant Labs"), role: "Full-stack developer at Blackcurrant Labs", years: "2021 – 2024", city: "Mumbai" },
+];
+
 /** Work that has no public case-study page. Wording follows the CV, the experience entries and project READMEs. */
 const STATIC: Record<string, ShowItem> = {
   mt5: {

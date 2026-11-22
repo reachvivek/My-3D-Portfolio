@@ -4,9 +4,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState, type MutableR
 import Image from "next/image";
 import { motion, motionValue, useAnimationFrame, useMotionValue, useReducedMotion, useSpring, useTransform, type MotionValue } from "motion/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import type { ExperienceData, HeroData, ProjectData } from "@/lib/types";
-import { BRANDS, buildSectors, type Sector, type ShowItem } from "./showcase/data";
-import { AppIcon, CALENDLY, FAINT, GOLD, INK, LINE, Location, LogoMarquee, LogoRow, MUTED, Thumb, Typing, Virtual, clampLines } from "./showcase/parts";
+import type { ExperienceData, HeroData, ProjectData, StatData } from "@/lib/types";
+import { BRANDS, EXPOSURE, buildSectors, type Sector, type ShowItem } from "./showcase/data";
+import { AppIcon, CALENDLY, FAINT, GOLD, INK, LINE, Location, LogoMarquee, LogoRow, MUTED, MarqueeItem, Thumb, Typing, Virtual, clampLines } from "./showcase/parts";
 
 /*
  * One sticky stage, driven by page scroll.
@@ -156,7 +156,7 @@ function useMotionValues() {
 }
 type MV = ReturnType<typeof useMotionValues>;
 
-export default function HeroShowcase({ hero, projects, experiences }: { hero: HeroData | null; projects: ProjectData[]; experiences: ExperienceData[] }) {
+export default function HeroShowcase({ hero, projects, experiences, stats = [] }: { hero: HeroData | null; projects: ProjectData[]; experiences: ExperienceData[]; stats?: StatData[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const lapInnerRef = useRef<HTMLDivElement>(null);
@@ -360,7 +360,7 @@ export default function HeroShowcase({ hero, projects, experiences }: { hero: He
                     </motion.div>
                     {!layout.mobile && (
                       <motion.div className="absolute inset-0" style={{ opacity: mv.lapMain, pointerEvents: lapMainEvents }}>
-                        <Dossier sectors={desktopSectors} experiences={experiences} innerRef={lapInnerRef} anchors={lapAnchors} y={mv.lapInnerY} bar={mv.lapBar} active={activeLap} onTab={(k) => goTo(k, "lap")} />
+                        <Dossier sectors={desktopSectors} experiences={experiences} stats={stats} innerRef={lapInnerRef} anchors={lapAnchors} y={mv.lapInnerY} bar={mv.lapBar} active={activeLap} onTab={(k) => goTo(k, "lap")} />
                       </motion.div>
                     )}
                   </Virtual>
@@ -404,7 +404,7 @@ export default function HeroShowcase({ hero, projects, experiences }: { hero: He
                     </motion.div>
                     {layout.mobile && (
                       <motion.div className="absolute inset-0" style={{ opacity: mv.phMain, pointerEvents: phMainEvents }}>
-                        <Store sectors={mobileSectors} count={mobileSectors.reduce((n, s) => n + s.items.length, 0)} innerRef={phInnerRef} anchors={phAnchors} y={mv.phInnerY} bar={mv.phBar} active={activePh} onTab={(k) => goTo(k, "ph")} />
+                        <Store sectors={mobileSectors} stats={stats} count={mobileSectors.reduce((n, s) => n + s.items.length, 0)} innerRef={phInnerRef} anchors={phAnchors} y={mv.phInnerY} bar={mv.phBar} active={activePh} onTab={(k) => goTo(k, "ph")} />
                       </motion.div>
                     )}
                   </Virtual>
@@ -464,7 +464,7 @@ export default function HeroShowcase({ hero, projects, experiences }: { hero: He
                 // "instant" overrides the site's CSS smooth scrolling: no long glide through the sequence
                 if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: "instant" });
               }}
-              className="absolute bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-white/15 bg-black/60 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/75 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold"
+              className="absolute bottom-6 left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/15 bg-black/60 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/75 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold"
               style={{ opacity: skipO, pointerEvents: skipEvents }}
             >
               Skip to projects ↓
@@ -553,6 +553,7 @@ function BrowserWindow() {
 function Dossier({
   sectors,
   experiences,
+  stats,
   innerRef,
   anchors,
   y,
@@ -562,6 +563,7 @@ function Dossier({
 }: {
   sectors: Sector[];
   experiences: ExperienceData[];
+  stats: StatData[];
   innerRef: MutableRefObject<HTMLDivElement | null>;
   anchors: MutableRefObject<Record<string, HTMLElement | null>>;
   y: MotionValue<number>;
@@ -569,7 +571,7 @@ function Dossier({
   active: string;
   onTab: (key: string) => void;
 }) {
-  const tabs = [...sectors.map((s) => ({ key: s.id, label: s.short })), { key: "history", label: "History" }];
+  const tabs = [{ key: "overview", label: "Overview" }, ...sectors.map((s) => ({ key: s.id, label: s.short })), { key: "history", label: "History" }];
   const barW = useTransform(bar, (v) => `${v * 100}%`);
   return (
     <div className="absolute inset-0" style={{ background: "radial-gradient(70% 50% at 100% 0%,rgba(212,168,83,0.08),transparent 60%),#0a0909" }}>
@@ -598,6 +600,41 @@ function Dossier({
       {/* scrolling content */}
       <div className="absolute left-0 right-0 overflow-hidden" style={{ top: LAP_HEADER, bottom: 0 }}>
         <motion.div ref={innerRef} className="relative" style={{ y, padding: "56px 72px 72px" }}>
+          {/* 00 · the subject summary: track record and in what capacity each logo was earned */}
+          <section ref={(el) => { anchors.current.overview = el; }} style={{ marginBottom: 88 }}>
+            <div style={{ fontSize: 17, letterSpacing: "0.3em", color: GOLD, fontFamily: "var(--font-mono), monospace" }}>00 · SUBJECT SUMMARY</div>
+            <h3 style={{ fontSize: 58, fontWeight: 600, letterSpacing: "-0.02em", color: INK, margin: "8px 0 0", lineHeight: 1.05 }}>Experience &amp; industry exposure</h3>
+            {stats.length > 0 && (
+              <div className="grid" style={{ gridTemplateColumns: `repeat(${stats.length}, 1fr)`, gap: 32, marginTop: 34, paddingTop: 30, borderTop: `1px solid ${LINE}` }}>
+                {stats.map((st) => (
+                  <div key={st.label}>
+                    <div style={{ fontFamily: "var(--font-instrument), serif", fontSize: 78, color: INK, lineHeight: 1 }}>{st.value}</div>
+                    <div style={{ fontSize: 15, letterSpacing: "0.2em", textTransform: "uppercase", color: FAINT, marginTop: 10 }}>{st.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div style={{ marginTop: 40 }}>
+              {EXPOSURE.map((row) => (
+                <div key={row.sector} className="grid items-center" style={{ gridTemplateColumns: "290px 1fr 430px", gap: 28, padding: "20px 0", borderTop: `1px solid ${LINE}` }}>
+                  <div style={{ fontFamily: "var(--font-instrument), serif", fontSize: 38, color: INK, lineHeight: 1.05 }}>{row.sector}</div>
+                  <div className="flex flex-wrap items-center" style={{ margin: "0 -20px" }}>
+                    {row.logos.map((l) => (
+                      <MarqueeItem key={l.name} logo={l} />
+                    ))}
+                    {row.also && <span style={{ fontSize: 17, color: MUTED, padding: "0 20px" }}>{row.also}</span>}
+                  </div>
+                  <div style={{ textAlign: "right", fontSize: 18, lineHeight: 1.45, color: MUTED }}>
+                    {row.role}
+                    <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: 15, color: "rgba(212,168,83,0.75)", marginTop: 6 }}>
+                      {row.years} · {row.city}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {sectors.map((s, si) => (
             <section key={s.id} ref={(el) => { anchors.current[s.id] = el; }} style={{ marginBottom: 72 }}>
               <div className="flex items-end justify-between" style={{ marginBottom: 34, gap: 40 }}>
@@ -732,6 +769,7 @@ function PhoneProfile() {
 
 function Store({
   sectors,
+  stats,
   count,
   innerRef,
   anchors,
@@ -741,6 +779,7 @@ function Store({
   onTab,
 }: {
   sectors: Sector[];
+  stats: StatData[];
   count: number;
   innerRef: MutableRefObject<HTMLDivElement | null>;
   anchors: MutableRefObject<Record<string, HTMLElement | null>>;
@@ -778,6 +817,19 @@ function Store({
 
       <div className="absolute left-0 right-0 bottom-0 overflow-hidden" style={{ top: PHONE_HEADER }}>
         <motion.div ref={innerRef} className="relative" style={{ y, padding: "18px 16px 60px" }}>
+          {stats.length > 0 && (
+            <section ref={(el) => { anchors.current.overview = el; }} style={{ marginBottom: 28 }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: GOLD }}>Track record</div>
+              <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 10 }}>
+                {stats.map((st) => (
+                  <div key={st.label} style={{ border: `1px solid ${LINE}`, borderRadius: 14, padding: "12px 14px" }}>
+                    <div style={{ fontFamily: "var(--font-instrument), serif", fontSize: 32, color: INK, lineHeight: 1 }}>{st.value}</div>
+                    <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: FAINT, marginTop: 6 }}>{st.label}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
           {sectors.map((s) => {
             const [featured, ...rest] = s.items;
             return (

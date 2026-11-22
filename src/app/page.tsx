@@ -1,13 +1,11 @@
 import { getAllPageData } from "@/lib/queries";
 import Navbar from "@/components/Navbar";
 import HeroShowcase from "@/components/HeroShowcase";
-import Credentials from "@/components/Credentials";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import CaseStudies from "@/components/CaseStudies";
 import WorldMap from "@/components/WorldMap";
 import Process from "@/components/Process";
-import Services from "@/components/Services";
 import TechStack3D from "@/components/TechStack3D";
 import Exploring from "@/components/Exploring";
 import Highlights from "@/components/Highlights";
@@ -31,15 +29,14 @@ export default async function Home() {
       <Preloader />
       <SmoothScroll />
       <Navbar navLinks={data.navLinks} />
-      <HeroShowcase hero={data.hero} projects={data.projects} experiences={data.experiences} />
-      <Credentials stats={data.stats} />
+      {/* Experience & industry exposure now lives inside the laptop, as the dossier's first page */}
+      <HeroShowcase hero={data.hero} projects={data.projects} experiences={data.experiences} stats={data.stats} />
       <Projects projects={data.projects} />
       <CaseStudies projects={data.projects} />
       <WorldMap />
       <About />
       <Experience experiences={data.experiences} />
       <Process process={data.process} />
-      <Services services={data.services} />
       <TechStack3D />
       <Exploring />
       <Highlights />
