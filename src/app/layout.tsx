@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,15 +7,33 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+/** Editorial accent face, used sparingly for headlines. */
+const serif = Instrument_Serif({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
   title: {
     default:
-      "Vivek Kumar Singh | Full-Stack Developer & AI Engineer in Dubai, UAE",
+      "Vivek Kumar Singh | Software Developer & Architect · Fintech, Dubai & Abu Dhabi",
     template: "%s | Vivek Kumar Singh",
   },
   description:
-    "Top full-stack developer and AI engineer based in Abu Dhabi, UAE. Building AI voice agents for Audi, Porsche & Volkswagen. Fintech platforms for BSE & NSDL. Expert in Next.js, React, Node.js, Python, and AI/ML. Available for freelance and contract work across Dubai, Abu Dhabi, and the UAE.",
+    "Software developer and architect in the UAE for fintech and banking: MT5 trading platforms for UAE-licensed brokers, payment gateways (N-Genius, e& Payments, MyFatoorah) and KYC workflows. Delivered for BSE, NSDL and CMS Info Systems. Java, .NET, Node.js, Python, React and Angular. Also building AI voice agents for Audi, Porsche and Volkswagen. Open to roles and contracts across Dubai and Abu Dhabi.",
   keywords: [
+    "software architect Dubai",
+    "software architect Abu Dhabi",
+    "software developer UAE",
+    "fintech developer Dubai",
+    "fintech developer Abu Dhabi",
+    "banking software engineer UAE",
+    "Java developer Dubai",
+    "Java developer Abu Dhabi",
+    "payment gateway developer UAE",
+    "MT5 developer Dubai",
     "full stack developer Dubai",
     "full stack developer UAE",
     "full stack developer Abu Dhabi",
@@ -84,7 +102,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://reachvivek.vercel.app"),
   openGraph: {
     title:
-      "Vivek Kumar Singh | Full-Stack Developer & AI Engineer in Dubai, UAE",
+      "Vivek Kumar Singh | Software Developer & Architect · Fintech, Dubai & Abu Dhabi",
     description:
       "Top-rated full-stack developer in Dubai, UAE. Engineering AI voice agents for Audi, Porsche & VW. Building fintech platforms for BSE & NSDL. 20+ systems delivered. Available for hire.",
     type: "website",
@@ -103,7 +121,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Vivek Kumar Singh | Full-Stack Developer & AI Engineer in Dubai, UAE",
+      "Vivek Kumar Singh | Software Developer & Architect · Fintech, Dubai & Abu Dhabi",
     description:
       "Top full-stack developer in Dubai. AI voice agents for Audi, Porsche & VW. Fintech for BSE & NSDL. 20+ systems delivered. Hire me.",
     images: ["/og-image.png"],
@@ -314,7 +332,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
       </head>
-      <body className={`${inter.variable} antialiased grain`}>
+      <body className={`${inter.variable} ${serif.variable} antialiased grain`}>
         {children}
       </body>
     </html>

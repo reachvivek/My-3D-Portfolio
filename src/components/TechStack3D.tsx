@@ -10,33 +10,87 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const techIcons = [
+type TechIcon = {
+  name: string;
+  /** A .glb in /public/models, or "java" for the coffee cup built from primitives below. */
+  modelPath: string;
+  scale: number;
+  rotation: number[];
+};
+
+const techIcons: TechIcon[] = [
+  { name: "Java", modelPath: "java", scale: 0.95, rotation: [0.25, -0.5, 0] },
+  { name: ".NET / C#", modelPath: "/models/csharp.glb", scale: 1, rotation: [0, -Math.PI / 2, 0] },
+  { name: "Node.js", modelPath: "/models/node-transformed.glb", scale: 2.8, rotation: [0, -Math.PI / 2, 0] },
   { name: "React", modelPath: "/models/react_logo-transformed.glb", scale: 0.55, rotation: [0, 0, 0] },
   { name: "Angular", modelPath: "/models/angular.glb", scale: 1, rotation: [0, -Math.PI / 2, 0] },
-  { name: "Node.js", modelPath: "/models/node-transformed.glb", scale: 2.8, rotation: [0, -Math.PI / 2, 0] },
-  { name: ".NET / C#", modelPath: "/models/csharp.glb", scale: 1, rotation: [0, -Math.PI / 2, 0] },
   { name: "Python", modelPath: "/models/python-transformed.glb", scale: 0.45, rotation: [0, 0, 0] },
-  { name: "Git", modelPath: "/models/git.glb", scale: 3.5, rotation: [0, 0, 0] },
-  { name: "Docker", modelPath: "/models/docker.glb", scale: 5, rotation: [0, -0.3, 0] },
   { name: "AWS", modelPath: "/models/aws.glb", scale: 0.55, rotation: [0, 0, 0] },
+  { name: "Docker", modelPath: "/models/docker.glb", scale: 5, rotation: [0, -0.3, 0] },
+  { name: "Three.js", modelPath: "/models/three.js-transformed.glb", scale: 1, rotation: [0, 0, 0] },
+  { name: "Git", modelPath: "/models/git.glb", scale: 3.5, rotation: [0, 0, 0] },
 ];
 
-function TechModel({ model }: { model: typeof techIcons[0] }) {
-  const { scene } = useGLTF(model.modelPath);
+const JAVA_BLUE = "#5382a1";
+const JAVA_ORANGE = "#f89820";
 
+/** Java's coffee cup and steam, built from primitives (no .glb needed). */
+function JavaCup() {
+  const cupProfile = [
+    [0, 0], [0.85, 0], [0.95, 0.08], [1.1, 1.7], [1.0, 1.7], [0.86, 0.16], [0, 0.16],
+  ].map(([x, y]) => new THREE.Vector2(x, y));
+  const steam = (dx: number, h: number) =>
+    new THREE.CatmullRomCurve3([
+      new THREE.Vector3(dx - 0.15, 1.95, 0),
+      new THREE.Vector3(dx + 0.15, 1.95 + h * 0.33, 0),
+      new THREE.Vector3(dx - 0.15, 1.95 + h * 0.66, 0),
+      new THREE.Vector3(dx + 0.12, 1.95 + h, 0),
+    ]);
+  return (
+    <group position={[0, -1.35, 0]}>
+      <mesh>
+        <latheGeometry args={[cupProfile, 48]} />
+        <meshStandardMaterial color={JAVA_BLUE} metalness={0.3} roughness={0.35} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[1.12, 0.92, 0]} rotation={[0, 0, -Math.PI / 2]}>
+        <torusGeometry args={[0.42, 0.09, 16, 48, Math.PI]} />
+        <meshStandardMaterial color={JAVA_BLUE} metalness={0.3} roughness={0.35} />
+      </mesh>
+      <mesh position={[0, -0.08, 0]}>
+        <cylinderGeometry args={[1.55, 1.35, 0.12, 48]} />
+        <meshStandardMaterial color={JAVA_BLUE} metalness={0.3} roughness={0.4} />
+      </mesh>
+      <mesh>
+        <tubeGeometry args={[steam(-0.25, 1.15), 48, 0.075, 12, false]} />
+        <meshStandardMaterial color={JAVA_ORANGE} metalness={0.2} roughness={0.4} />
+      </mesh>
+      <mesh>
+        <tubeGeometry args={[steam(0.3, 0.85), 48, 0.065, 12, false]} />
+        <meshStandardMaterial color={JAVA_ORANGE} metalness={0.2} roughness={0.4} />
+      </mesh>
+    </group>
+  );
+}
+
+function GltfModel({ path }: { path: string }) {
+  const { scene } = useGLTF(path);
+  return <primitive object={scene.clone()} />;
+}
+
+function TechModel({ model }: { model: TechIcon }) {
   return (
     <Float speed={4} rotationIntensity={0.5} floatIntensity={0.8}>
       <group
         scale={model.scale}
         rotation={model.rotation as [number, number, number]}
       >
-        <primitive object={scene.clone()} />
+        {model.modelPath === "java" ? <JavaCup /> : <GltfModel path={model.modelPath} />}
       </group>
     </Float>
   );
 }
 
-function TechCard({ model }: { model: typeof techIcons[0] }) {
+function TechCard({ model }: { model: TechIcon }) {
   return (
     <div className="tech-stack-card glass rounded-xl overflow-hidden group hover:border-gold/15 transition-all">
       <div className="h-36 sm:h-40 relative">
@@ -112,7 +166,7 @@ export default function TechStack3D() {
 
         <div
           ref={gridRef}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+          className="grid grid-cols-2 lg:grid-cols-5 gap-4"
         >
           {techIcons.map((icon) => (
             <TechCard key={icon.name} model={icon} />
