@@ -261,7 +261,10 @@ export default function HeroShowcase({ hero, projects, experiences, stats = [] }
       const max = Math.max(0, (lapInnerRef.current?.offsetHeight ?? 0) - (LAP_H - LAP_HEADER));
       mv.lapInnerY.set(-p * max);
       mv.lapBar.set(p);
-      setActiveLap(activeAnchor(lapAnchors, p * max));
+      const tab = activeAnchor(lapAnchors, p * max);
+      setActiveLap(tab);
+      // where in the showcase the visitor is, for the analytics heartbeat
+      sec.dataset.stage = u < 0.92 ? "intro" : tab || "overview";
     } else {
       mv.lapO.set(1 - ease(seg(u, 0, 0.45)));
       mv.cmd.set(0);
@@ -281,7 +284,9 @@ export default function HeroShowcase({ hero, projects, experiences, stats = [] }
       const max = Math.max(0, (phInnerRef.current?.offsetHeight ?? 0) - (L.ph.virtH - PHONE_HEADER));
       mv.phInnerY.set(-p * max);
       mv.phBar.set(p);
-      setActivePh(activeAnchor(phAnchors, p * max));
+      const tab = activeAnchor(phAnchors, p * max);
+      setActivePh(tab);
+      sec.dataset.stage = u < 0.6 ? "intro" : tab || "overview";
     }
   }, [mv]);
 

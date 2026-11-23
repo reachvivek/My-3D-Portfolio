@@ -151,7 +151,7 @@ export default function Highlights() {
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/20">
             <span className="text-xs text-gold font-medium">
-              Next up: HYROX Hong Kong, May 8-10 2026
+              Finished · HYROX Abu Dhabi, Men&apos;s Pro
             </span>
           </div>
         </motion.div>

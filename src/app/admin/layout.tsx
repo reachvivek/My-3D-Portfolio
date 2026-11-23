@@ -25,6 +25,7 @@ import {
   Quote,
   Globe,
   ShoppingBag,
+  Activity,
 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -33,6 +34,7 @@ const navSections = [
     label: "Overview",
     items: [
       { href: "/admin", label: "Dashboard", icon: BarChart2 },
+      { href: "/admin/analytics", label: "Analytics", icon: Activity },
       { href: "/admin/enquiries", label: "Enquiries", icon: Mail },
       { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
     ],
@@ -76,7 +78,7 @@ const allNavItems = navSections.flatMap((s) => s.items);
 function LoginGate({ onAuth }: { onAuth: () => void }) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<boolean | string>(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -91,8 +93,15 @@ function LoginGate({ onAuth }: { onAuth: () => void }) {
     });
 
     if (res.ok) {
-      sessionStorage.setItem("admin_auth", "true");
+      // this browser belongs to the owner: never count its visits in the analytics
+      try {
+        localStorage.setItem("rv_owner", "1");
+      } catch {}
       onAuth();
+    } else if (res.status === 429) {
+      const { retryAfter } = await res.json().catch(() => ({ retryAfter: 900 }));
+      setError(`Too many attempts. Try again in ${Math.max(1, Math.ceil(retryAfter / 60))} min.`);
+      setPassword("");
     } else {
       setError(true);
       setPassword("");
@@ -181,7 +190,7 @@ function LoginGate({ onAuth }: { onAuth: () => void }) {
               animate={{ opacity: 1, x: 0 }}
               className="text-xs text-red-400/80"
             >
-              Incorrect password. Try again.
+              {typeof error === "string" ? error : "Incorrect password. Try again."}
             </motion.p>
           )}
 
@@ -229,13 +238,19 @@ export default function AdminLayout({
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(true);
 
+  // the session lives in an HttpOnly cookie checked by the server; the page can only ask
   useEffect(() => {
-    const stored = sessionStorage.getItem("admin_auth");
-    if (stored === "true") {
-      setAuthed(true);
-    }
-    setChecking(false);
+    fetch("/api/admin/auth", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setAuthed(!!d.authed))
+      .catch(() => setAuthed(false))
+      .finally(() => setChecking(false));
   }, []);
+
+  const signOut = async () => {
+    await fetch("/api/admin/auth", { method: "DELETE" }).catch(() => {});
+    setAuthed(false);
+  };
 
   if (checking) {
     return (
@@ -304,10 +319,7 @@ export default function AdminLayout({
 
         <div className="p-4 border-t border-white/6 space-y-2">
           <button
-            onClick={() => {
-              sessionStorage.removeItem("admin_auth");
-              setAuthed(false);
-            }}
+            onClick={signOut}
             className="w-full text-xs text-white/25 hover:text-red-400 transition-colors text-center py-1"
           >
             Sign Out
@@ -347,10 +359,7 @@ export default function AdminLayout({
               );
             })}
             <button
-              onClick={() => {
-                sessionStorage.removeItem("admin_auth");
-                setAuthed(false);
-              }}
+              onClick={signOut}
               className="p-2 rounded-lg text-white/25 hover:text-red-400 transition-colors"
             >
               <Lock className="w-4 h-4" />

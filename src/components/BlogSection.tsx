@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import { ArrowRight, Heart, Eye, Clock } from "lucide-react";
 import type { BlogPostData } from "@/lib/types";
 
@@ -41,8 +42,21 @@ export default function BlogSection({ posts }: BlogSectionProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="group block glass glass-hover rounded-2xl p-6 sm:p-8 transition-all hover:border-gold/15"
+              className="group block glass glass-hover rounded-2xl overflow-hidden transition-all hover:border-gold/15 sm:grid sm:grid-cols-[1fr_300px]"
             >
+              {/* Cover: real product screenshot, first on phones, beside the text on wider screens */}
+              {post.coverImage && (
+                <div className="relative aspect-[1200/630] overflow-hidden border-b border-white/[0.06] sm:order-2 sm:aspect-auto sm:border-b-0 sm:border-l">
+                  <Image
+                    src={post.coverImage}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 300px"
+                    className="object-cover object-left-top transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                </div>
+              )}
+              <div className="p-6 sm:p-8">
               {/* Author + Date row */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center text-black text-xs font-bold">
@@ -102,6 +116,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
                     </span>
                   )}
                 </div>
+              </div>
               </div>
             </motion.a>
           ))}

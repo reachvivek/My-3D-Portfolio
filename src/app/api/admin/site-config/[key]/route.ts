@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { SiteConfig } from "@/lib/models";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ key: string }> }
 ) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
   await connectDB();
   const { key } = await params;
   const doc = await SiteConfig.findOne({ key }).lean();
@@ -16,6 +19,8 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ key: string }> }
 ) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
   await connectDB();
   const { key } = await params;
   const body = await request.json();

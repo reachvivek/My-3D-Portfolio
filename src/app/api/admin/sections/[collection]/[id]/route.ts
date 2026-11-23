@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Stat, Company, Service, Process, Testimonial, SocialLink, Experience, Project } from "@/lib/models";
+import { requireAdmin } from "@/lib/admin-auth";
 
 const models: Record<string, any> = {
   stats: Stat,
@@ -17,6 +18,8 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ collection: string; id: string }> }
 ) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
   await connectDB();
   const { collection, id } = await params;
   const Model = models[collection];
@@ -30,6 +33,8 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ collection: string; id: string }> }
 ) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
   await connectDB();
   const { collection, id } = await params;
   const Model = models[collection];

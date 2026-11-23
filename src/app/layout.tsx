@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import Analytics from "@/components/Analytics";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -18,8 +19,8 @@ const serif = Instrument_Serif({
 export const metadata: Metadata = {
   title: {
     default:
-      "Vivek Kumar Singh | Software Developer & Architect · Fintech, Dubai & Abu Dhabi",
-    template: "%s | Vivek Kumar Singh",
+      "Vivek Kumar Singh · Software Architect",
+    template: "%s · Vivek Kumar Singh",
   },
   description:
     "Software developer and architect in the UAE for fintech and banking: MT5 trading platforms for UAE-licensed brokers, payment gateways (N-Genius, e& Payments, MyFatoorah) and KYC workflows. Delivered for BSE, NSDL and CMS Info Systems. Java, .NET, Node.js, Python, React and Angular. Also building AI voice agents for Audi, Porsche and Volkswagen. Open to roles and contracts across Dubai and Abu Dhabi.",
@@ -102,12 +103,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://reachvivek.vercel.app"),
   openGraph: {
     title:
-      "Vivek Kumar Singh | Software Developer & Architect · Fintech, Dubai & Abu Dhabi",
+      "Vivek Kumar Singh · Software Architect",
     description:
       "Top-rated full-stack developer in Dubai, UAE. Engineering AI voice agents for Audi, Porsche & VW. Building fintech platforms for BSE & NSDL. 20+ systems delivered. Available for hire.",
     type: "website",
     locale: "en_AE",
-    siteName: "Vivek Kumar Singh | Full-Stack Developer Dubai",
+    siteName: "Vivek Kumar Singh",
     url: "https://reachvivek.vercel.app",
     images: [
       {
@@ -121,7 +122,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Vivek Kumar Singh | Software Developer & Architect · Fintech, Dubai & Abu Dhabi",
+      "Vivek Kumar Singh · Software Architect",
     description:
       "Top full-stack developer in Dubai. AI voice agents for Audi, Porsche & VW. Fintech for BSE & NSDL. 20+ systems delivered. Hire me.",
     images: ["/og-image.png"],
@@ -334,6 +335,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${serif.variable} antialiased grain`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );

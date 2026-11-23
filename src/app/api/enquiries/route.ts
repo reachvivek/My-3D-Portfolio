@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Enquiry } from "@/lib/models";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
   await connectDB();
@@ -14,7 +15,9 @@ export async function POST(request: Request) {
   return NextResponse.json({ success: true });
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const denied = await requireAdmin(request);
+  if (denied) return denied;
   await connectDB();
   const docs = await Enquiry.find({}).sort({ createdAt: -1 }).lean();
   return NextResponse.json(JSON.parse(JSON.stringify(docs)));

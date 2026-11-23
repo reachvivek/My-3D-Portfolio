@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seoDesc = `${project.desc} Built by Vivek Kumar Singh, full-stack developer in Dubai, UAE. ${project.category} project using ${tagList}. View the full case study.`;
 
   return {
-    title: `${project.title} | Case Study by Vivek Kumar Singh, Developer in Dubai UAE`,
+    title: `${project.title} · Case Study`,
     description: seoDesc,
     keywords: [
       ...project.tags,
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "AI developer UAE",
     ],
     openGraph: {
-      title: `${project.title} | Built by Vivek Kumar Singh, Full-Stack Developer in Dubai`,
+      title: `${project.title} · Vivek Kumar Singh`,
       description: seoDesc,
       images: [
         {
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} | Vivek Kumar Singh`,
+      title: `${project.title} · Vivek Kumar Singh`,
       description: seoDesc,
       images: [project.imgPath],
     },

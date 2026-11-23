@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { BlogPost } from "@/lib/models";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const denied = await requireAdmin(req);
+  if (denied) return denied;
   try {
     await connectDB();
     const { slug } = await params;
@@ -23,6 +26,8 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const denied = await requireAdmin(req);
+  if (denied) return denied;
   try {
     await connectDB();
     const { slug } = await params;
@@ -54,6 +59,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  const denied = await requireAdmin(req);
+  if (denied) return denied;
   try {
     await connectDB();
     const { slug } = await params;
